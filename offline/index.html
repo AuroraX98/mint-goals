@@ -1,0 +1,502 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; connect-src 'none'; font-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#B5E4D0"><meta name="description" content="A little space for your goals. Write your next steps, make them yours, and see your progress.">
+<title>Mint Goals — offline edition</title><style>:root{--mint:#709C8C;--card:#EAF7F0;--ink:#163B31;--lavender:#A995D5;--bg:#B5E4D0;--paper:#EAF7F0;--muted:#52675d;--line:#c2d5c9;--soft:#e8f0e9;--shadow:0 8px 28px #163b3107;font-family:Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--ink);background:var(--bg);font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input,textarea{font:inherit}button,a,input,textarea{-webkit-tap-highlight-color:transparent}button{cursor:pointer;color:inherit}button:disabled{cursor:not-allowed;opacity:.4}button:focus-visible,a:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid #7557a3;outline-offset:3px}button{transition:background .15s,transform .15s}button:hover:not(:disabled){filter:brightness(.97)}button:active:not(:disabled){transform:translateY(1px)}[hidden]{display:none!important}.skip{position:fixed;top:-100px;left:16px;padding:12px;background:white;z-index:10}.skip:focus{top:16px}.app-shell{display:flex;min-height:100vh}.sidebar{width:226px;flex-shrink:0;background:#a6d6c1;padding:40px 28px;display:flex;flex-direction:column;border-right:1px solid #163b3109}.brand{display:flex;align-items:center;gap:12px;color:var(--ink);text-decoration:none;font-size:39px;font-weight:650;letter-spacing:-2px;line-height:.9}.brand-icon{font-size:49px;font-weight:400;line-height:1}.brand-small{display:block;letter-spacing:5px;font-size:9px;margin:9px 0 0 4px}.eyebrow{font-size:10px;letter-spacing:1.8px;font-weight:750;line-height:1.6}.side-note{margin-top:94px}.side-note p{font-family:Georgia,serif;font-size:27px;line-height:1.48;letter-spacing:-.7px;margin-top:16px}.side-note em{color:#3e6c58}.sidebar-bottom{margin-top:auto;padding-top:70px;font-size:11px;font-weight:650;line-height:1.8}.sidebar-bottom p{font-weight:400;color:var(--muted);font-size:11px}.local-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#39694c;margin-right:5px}.backup-actions{display:flex;align-items:flex-start;flex-direction:column;gap:7px}.text-button{background:transparent;border:0;padding:3px 0;text-decoration:underline;text-underline-offset:4px;font-size:12px}main{max-width:1400px;width:100%;padding:57px 5vw 22px}.page-header{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:35px}.page-header h1{font-family:Georgia,"Times New Roman",serif;font-weight:400;font-size:clamp(29px,3.1vw,45px);letter-spacing:-1.5px;margin:14px 0 12px;line-height:1.15}.page-header p{font-size:14px;color:var(--muted);margin:0;line-height:1.7}.primary,.secondary{border-radius:12px;padding:13px 18px;font-size:13px;font-weight:650;white-space:nowrap;min-height:44px}.primary{border:1px solid var(--ink);background:var(--ink);color:#fff}.primary span{font-size:19px;margin-right:5px}.secondary{background:transparent;border:1px solid var(--line)}.overview{display:grid;grid-template-columns:repeat(3,1fr);padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-bottom:37px}.overview>div{display:flex;gap:14px;align-items:center;padding:0 22px;border-right:1px solid var(--line)}.overview>div:first-child{padding-left:0}.overview>div:last-child{border:0}.overview-icon{height:42px;width:42px;background:var(--card);border-radius:14px;display:grid;place-items:center;font-size:23px}.overview-icon.lavender{background:#e7dff1}.overview strong{display:block;font-size:25px;font-weight:600;line-height:1.1}.overview div div>span{font-size:11px;display:block;margin-top:6px;color:var(--muted)}.section-heading{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:21px}h2{font-size:20px;font-weight:550;letter-spacing:-.5px;margin:0}.filters{background:#e7eee6;border-radius:11px;padding:4px;display:flex;gap:2px}.filters button{border:0;padding:9px 13px;border-radius:8px;background:transparent;font-size:11px;min-height:36px}.filters [aria-pressed=true]{background:var(--paper);box-shadow:0 1px 4px #163b3110;font-weight:650}.goals-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;align-items:start}.goal-card{background:var(--paper);border:1px solid var(--line);border-radius:21px;padding:24px;box-shadow:var(--shadow);min-width:0}.goal-top{display:flex;align-items:start;gap:10px;justify-content:space-between}.goal-symbol{width:39px;height:39px;background:var(--card);display:grid;place-items:center;border-radius:13px;font-size:21px;flex-shrink:0}.goal-title{font-size:20px;line-height:1.35;font-weight:600;letter-spacing:-.5px;margin:14px 0 8px;overflow-wrap:anywhere}.goal-description{font-size:13px;color:var(--muted);line-height:1.7;white-space:pre-wrap;overflow-wrap:anywhere;margin:0 0 21px}.icon-button{border:0;background:transparent;border-radius:8px;min-width:36px;min-height:36px;font-size:20px}.goal-tools{display:flex;gap:4px}.small-button{font-size:11px;border:1px solid var(--line);background:transparent;border-radius:8px;min-height:34px;padding:7px 10px}.progress-label{display:flex;justify-content:space-between;gap:15px;font-size:10px;font-weight:650;color:var(--muted);margin-bottom:8px}.progress-track{height:6px;border-radius:99px;background:var(--soft);overflow:hidden}.progress-fill{height:100%;background:var(--mint);border-radius:99px;transition:width .2s}.steps{list-style:none;padding:0;margin:20px 0 15px}.step{display:flex;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid #163b310d}.step-check{flex:1;display:flex;gap:10px;align-items:center;font-size:13px;line-height:1.5;min-width:0;cursor:pointer}.step-check input{accent-color:var(--ink);width:18px;height:18px;flex-shrink:0}.step-text{overflow-wrap:anywhere;min-width:0}.step.done .step-text{text-decoration:line-through;color:var(--muted)}.step-emoji{font-size:19px;flex-shrink:0}.step-controls{display:flex;gap:1px}.step-controls button{border:0;background:transparent;width:28px;min-height:34px;border-radius:7px;font-size:12px}.add-step{display:flex;gap:7px;margin-top:17px;align-items:stretch}.add-step input{min-width:0;flex:1;border:1px solid var(--line);border-radius:10px;padding:11px 10px;background:transparent;font-size:12px;color:var(--ink)}.emoji-trigger{border:1px solid var(--line);border-radius:10px;background:var(--soft);font-size:19px;min-width:43px}.add-step button[type=submit]{background:var(--ink);border:0;color:white;border-radius:10px;min-width:40px;font-size:22px}.card-footer{display:flex;justify-content:space-between;align-items:center;gap:12px;border-top:1px solid var(--line);padding-top:17px;margin-top:20px}.complete-button{border:0;background:var(--card);border-radius:9px;padding:10px 13px;font-weight:650;font-size:11px;min-height:36px}.card-footer .text-button{font-size:10px;color:var(--muted)}.empty-state{grid-column:1/-1;background:var(--paper);border:1px dashed #a8c1b0;border-radius:22px;padding:58px 24px;text-align:center}.empty-symbol{width:68px;height:68px;background:var(--card);display:grid;place-items:center;border-radius:23px;margin:0 auto 21px;font-size:35px}.empty-state h3{font-family:Georgia,serif;font-weight:400;font-size:28px;letter-spacing:-.6px;margin:0 0 12px}.empty-state p{font-size:13px;line-height:1.7;color:var(--muted);max-width:350px;margin:0 auto 22px}.empty-actions{display:flex;gap:13px;justify-content:center;align-items:center}footer{padding:35px 0 0;text-align:center;font-size:11px;color:var(--muted)}footer span{margin-left:7px;color:var(--mint)}dialog{border:1px solid var(--line);padding:28px;border-radius:22px;width:min(520px,calc(100% - 30px));max-height:calc(100% - 32px);color:var(--ink);background:var(--paper);box-shadow:0 25px 90px #163b3130}dialog::backdrop{background:#12352b60;backdrop-filter:blur(4px)}.dialog-heading{display:flex;justify-content:space-between;align-items:center}dialog h2{font-family:Georgia,serif;font-size:31px;margin:8px 0 23px}dialog label{display:block;font-size:12px;font-weight:650;margin:17px 0 8px}dialog input,dialog textarea{display:block;width:100%;border:1px solid var(--line);background:transparent;padding:12px;border-radius:10px;color:var(--ink);font-size:14px}dialog textarea{resize:vertical;min-height:110px;line-height:1.6}.field-hint{color:var(--muted);font-size:11px;line-height:1.6}.dialog-actions{display:flex;justify-content:flex-end;gap:9px;margin-top:22px}.emoji-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-top:12px}.emoji-grid button{border:1px solid transparent;background:var(--soft);border-radius:10px;font-size:23px;min-height:42px}.emoji-grid button[aria-pressed=true]{border-color:var(--ink);background:var(--card)}.error{color:#9e3427;font-size:12px;line-height:1.5}.warning{padding:14px 18px;background:#fff1d6;border:1px solid #b6a16b;border-radius:12px;font-size:13px;line-height:1.6;margin-bottom:20px}.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);max-width:calc(100% - 28px);background:var(--ink);color:white;font-size:13px;line-height:1.5;padding:13px 20px;border-radius:12px;box-shadow:0 8px 25px #163b3120;z-index:5}.toast:empty{display:none}.no-steps{font-size:12px;color:var(--muted);line-height:1.7;margin:19px 0}.complete-note{font-size:12px;color:var(--muted);margin-top:17px}.task-remove{margin-right:auto;color:#8c3e34}@media(min-width:1500px){main{padding-left:70px;padding-right:70px}}@media(max-width:1100px){.sidebar{width:185px;padding:32px 22px}main{padding:40px 30px}.goals-grid{grid-template-columns:1fr}.overview>div{padding:0 14px;gap:9px}.overview-icon{width:35px;height:35px;font-size:20px}.page-header{align-items:flex-start}.page-header h1{font-size:33px}}@media(max-width:700px){.app-shell{display:block}.sidebar{width:100%;padding:20px 22px;display:flex;flex-direction:row;align-items:center;justify-content:space-between;border-right:0;border-bottom:1px solid var(--line)}.brand{font-size:30px}.brand-icon{font-size:37px}.brand-small{font-size:7px;letter-spacing:3px;margin-top:7px}.side-note{display:none}.sidebar-bottom{padding:0;margin:0;font-size:10px;text-align:right}.sidebar-bottom p{display:none}.backup-actions{flex-direction:row;gap:10px}.backup-actions button{font-size:10px}main{padding:28px 20px}.page-header{display:block;margin-bottom:25px}.page-header h1{font-size:34px;max-width:330px}.page-header .primary{margin-top:22px}.page-header .eyebrow{font-size:9px;letter-spacing:1.3px}.overview{margin-bottom:27px;padding:19px 0}.overview>div{display:block;padding:0 10px}.overview-icon{display:none}.overview strong{font-size:25px}.overview div div>span{font-size:10px;line-height:1.4}.section-heading{align-items:flex-start;flex-direction:column;gap:14px}.filters{width:100%}.filters button{flex:1;padding:9px 8px}.goal-card{padding:20px}.empty-state{padding:36px 20px}.empty-state h3{font-size:26px}.empty-actions{flex-direction:column}.step-controls button{width:26px}.step{gap:3px}.step-check{gap:7px}.emoji-grid{gap:4px;grid-template-columns:repeat(6,1fr)}dialog{padding:23px}.dialog-actions{flex-wrap:wrap}.toast{bottom:15px}}@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+
+select{font:inherit;color:var(--ink);background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:10px;max-width:100%}.category-bar{display:flex;gap:12px;align-items:center;margin:0 0 20px;font-size:12px;flex-wrap:wrap}.category-bar select{max-width:240px}.category-bar .text-button{margin-left:auto}.category-badge{display:inline-block;background:#ddd3ec;color:#3c2b55;font-size:10px;border-radius:6px;padding:5px 8px;margin-top:10px;overflow-wrap:anywhere;max-width:100%}.goal-symbol svg,.icon-option svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}.goal-symbol{border:0;cursor:pointer}.icon-section h3{font-size:11px;margin:16px 0 8px;color:var(--muted)}.icon-options{display:grid;grid-template-columns:repeat(8,1fr);gap:5px}.icon-option{height:40px;border-radius:9px;background:var(--soft);border:1px solid transparent;display:grid;place-items:center}.icon-option[aria-pressed=true]{background:#c5decf;border-color:var(--ink)}.icon-section{max-height:245px;overflow:auto;padding:3px}.category-edit{display:flex;gap:8px;align-items:center}.category-edit input{margin-bottom:8px}dialog select{width:100%}.warning button{margin:6px 8px 0 0}.field-hint{margin-bottom:10px}@media(max-width:700px){.category-bar select{max-width:180px}.category-bar .text-button{margin-left:0}.icon-options{grid-template-columns:repeat(6,1fr)}}
+
+/* Keep goal-form actions comfortably separated on desktop and mobile. */
+.goal-category-details{margin-top:16px}
+.goal-draft-steps{display:grid;gap:16px}
+.goal-remove-step{display:block;min-height:44px;margin-top:12px;padding:10px 0}
+.goal-add-step{display:block;min-height:44px;margin-top:16px}
+.goal-icon-details{margin-top:20px}
+.goal-category-details>summary,.goal-icon-details>summary{min-height:44px;padding:12px 0;line-height:20px;cursor:pointer}
+
+/* A quiet, tactile mint surface: clearer edges without imagery or extra UI. */
+:root{--bg:#ACD9C3;--paper:#EEF8F1;--card:#DAEDDF;--muted:#405F50;--line:#668C78;--soft:#D5E8DA;--shadow:inset 0 1px 0 #ffffff,0 2px 3px #244c3914,0 12px 26px #244c391c}
+body{background:linear-gradient(150deg,#C0E5D1 0%,var(--bg) 65%,#A5D0B9 100%);background-attachment:fixed}
+.sidebar{background:linear-gradient(120deg,#AED8C1,#A1CDB5);border-right:2px solid #668C78;box-shadow:inset -1px 0 0 #e5f5ea}
+.sidebar-bottom{border-top:1px solid #668C78;padding-top:24px}
+.overview{background:#D7EBDDA6;border:1px solid #668C78;border-radius:17px;padding:24px;box-shadow:inset 0 1px 0 #f7fff8,0 4px 10px #244c390b;margin-bottom:34px}
+.overview>div{border-right:1px solid #668C78}
+.overview-icon,.goal-symbol,.empty-symbol{background:linear-gradient(#F5FCF7,#D7ECDD);border:1px solid #729783;box-shadow:inset 0 1px 0 white,0 2px 3px #244c3912}
+.overview-icon.lavender{background:linear-gradient(#F4EFFA,#E2D8EE);border-color:#9784B1}
+.section-heading{margin-bottom:22px}
+.category-bar{padding:0 0 22px;margin-bottom:26px;border-bottom:2px solid #668C78;gap:14px}
+.goals-grid{gap:26px}
+.goal-card{background:linear-gradient(150deg,#F5FCF7,var(--paper) 60%,#E5F2E9);border:1.5px solid #668C78;padding:26px;border-radius:20px;box-shadow:var(--shadow)}
+.goal-description{margin-bottom:24px}
+.goal-tools{gap:7px}
+.progress-track{height:8px;background:#C4DDCC;border:1px solid #668C78;box-shadow:inset 0 1px 2px #244c3926}
+.progress-fill{background:linear-gradient(90deg,#4D7D64,#668F78)}
+.steps{margin:24px 0 18px;border-top:1px solid #759683}
+.step{padding:14px 0;border-bottom:1px solid #759683;box-shadow:0 1px 0 #ffffffb3}
+.step-check input{width:20px;height:20px}
+.card-footer{border-top:2px solid #759683;padding-top:22px;margin-top:24px}
+.primary,.add-step button[type=submit]{background:linear-gradient(#285443,#163B31);border:1px solid #163B31;box-shadow:inset 0 1px 0 #ffffff30,0 2px 0 #0E2A22,0 4px 8px #163b3120}
+.secondary,.small-button,.complete-button,.emoji-trigger{background:linear-gradient(#F6FCF7,#DEEEE2);border:1px solid #668C78;box-shadow:inset 0 1px 0 white,0 2px 0 #AAC8B5}
+.primary:active:not(:disabled),.secondary:active:not(:disabled),.small-button:active:not(:disabled),.complete-button:active:not(:disabled),.emoji-trigger:active:not(:disabled),.add-step button[type=submit]:active:not(:disabled){box-shadow:inset 0 2px 3px #163b3120;transform:translateY(1px)}
+.filters{background:#9FC4AD;border:1px solid #668C78;box-shadow:inset 0 1px 3px #163b311a;padding:5px}
+.filters [aria-pressed=true]{background:linear-gradient(#FFFFFF,#EAF6ED);box-shadow:0 1px 3px #163b3133;outline:1px solid #668C78}
+.add-step input,dialog input,dialog textarea,select{background:#F9FDFA;border:1.5px solid #668C78;box-shadow:inset 0 1px 3px #244c3912}
+.add-step{gap:9px;margin-top:21px}
+.empty-state{border:1.5px solid #668C78;background:linear-gradient(#F5FCF7,#E6F3EA);box-shadow:var(--shadow)}
+dialog{background:linear-gradient(145deg,#F6FCF7,#E6F3EA);border:1.5px solid #668C78;box-shadow:inset 0 1px 0 white,0 5px 12px #163b3120,0 28px 80px #163b3159}
+.dialog-heading{border-bottom:1px solid #759683;padding-bottom:14px;margin-bottom:16px}
+.dialog-actions{border-top:1px solid #759683;padding-top:22px;margin-top:26px}
+.goal-category-details,.goal-icon-details{border-top:1px solid #759683;padding-top:8px}
+.icon-option,.emoji-grid button{border-color:#759683;box-shadow:inset 0 1px 0 #ffffffb3}
+.icon-option[aria-pressed=true],.emoji-grid button[aria-pressed=true]{outline:2px solid var(--ink);outline-offset:1px}
+.category-badge{border:1px solid #9784B1;box-shadow:inset 0 1px 0 #ffffff80}
+footer{margin-top:30px;padding-top:23px;border-top:1px solid #668C78}
+@media(max-width:1100px){.overview{padding:22px 16px}}
+@media(max-width:700px){
+ .sidebar{border-right:0;border-bottom:2px solid #668C78;box-shadow:inset 0 -1px 0 #e5f5ea}
+ .sidebar-bottom{border:0;padding-top:0}
+ .overview{padding:20px 14px}
+ .goal-card{padding:22px 18px}
+ .goals-grid{gap:24px}
+ .category-bar{padding-bottom:20px;margin-bottom:23px}
+ .step{padding:14px 0}
+ .card-footer{gap:10px}
+}
+/* Subtle depth responds to input; every control remains usable without hover. */
+.goal-card{transition:box-shadow .18s ease,border-color .18s ease}
+.primary,.secondary,.small-button,.complete-button,.emoji-trigger,.icon-option,.add-step button[type=submit]{transition:transform .16s ease,box-shadow .16s ease}
+.progress-fill{transition:width .35s ease}
+.goal-card:focus-within{border-color:#315E49;box-shadow:inset 0 1px 0 white,0 3px 5px #244c391a,0 14px 28px #244c3926}
+@media(hover:hover) and (pointer:fine){
+ .goal-card:hover{border-color:#315E49;box-shadow:inset 0 1px 0 white,0 3px 5px #244c391a,0 14px 28px #244c3926}
+ .primary:hover:not(:disabled),.secondary:hover:not(:disabled),.small-button:hover:not(:disabled),.complete-button:hover:not(:disabled),.emoji-trigger:hover:not(:disabled),.icon-option:hover:not(:disabled){transform:translateY(-1px)}
+ .primary:active:not(:disabled),.secondary:active:not(:disabled),.small-button:active:not(:disabled),.complete-button:active:not(:disabled),.emoji-trigger:active:not(:disabled),.icon-option:active:not(:disabled){transform:translateY(1px)}
+}
+@media(prefers-reduced-motion:reduce){.goal-card,.primary,.secondary,.small-button,.complete-button,.emoji-trigger,.icon-option,.add-step button[type=submit],.progress-fill{transition:none;transform:none!important}}
+select:focus-visible{outline:3px solid #7557a3;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){button{transition:none;transform:none!important}}
+/* Progress: the same quiet mint surfaces, with a readable chart alternative. */
+.view-switch{display:flex;gap:10px;margin:0 0 28px;padding-bottom:22px;border-bottom:2px solid var(--line)}
+.view-switch [aria-pressed=true]{background:#244F3E;color:white;border-color:#163B31}
+.progress-explainer{max-width:750px;line-height:1.6;color:var(--muted)}
+.progress-controls{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin:24px 0}
+.progress-controls select{padding:12px;max-width:100%;border-radius:9px}
+.progress-summary{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px;margin:24px 0}
+.progress-stat,.progress-panel{border:1.5px solid var(--line);border-radius:18px;background:linear-gradient(145deg,#F5FCF7,#E5F2E9);box-shadow:var(--shadow);padding:24px}
+.progress-stat strong,.progress-stat span{display:block}.progress-stat strong{font-size:28px;margin-bottom:10px}.progress-stat span{color:var(--muted);line-height:1.5}
+.progress-panel{margin:26px 0}.progress-panel h3{margin:0 0 14px}.progress-panel .field-hint{line-height:1.6}
+.completion-chart{display:flex;align-items:flex-end;gap:9px;min-height:185px;overflow-x:auto;padding:16px 0 10px;border-bottom:2px solid var(--line)}
+.chart-column{flex:1;min-width:42px;text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:flex-end}
+.chart-count{font-size:12px;margin-bottom:8px}.chart-bar{width:70%;min-height:2px;background:linear-gradient(#648E75,#285443);border-radius:5px 5px 0 0;border:1px solid #285443}
+.chart-label{display:block;font-size:10px;line-height:1.4;margin-top:10px;min-height:30px;color:var(--muted)}
+.chart-data summary{cursor:pointer;padding:18px 0;min-height:44px}.chart-data table{border-collapse:collapse;width:100%;font-size:13px}.chart-data th,.chart-data td{text-align:left;padding:12px 8px;border-bottom:1px solid var(--line)}.chart-data caption{text-align:left;padding:10px 8px;color:var(--muted)}
+.completion-timeline{list-style:none;margin:0;padding:0}.completion-timeline li{padding:20px 0;border-top:1px solid var(--line);overflow-wrap:anywhere}.completion-timeline li strong{display:block;font-size:17px}.timeline-meta,.timeline-date{display:block;margin-top:8px;color:var(--muted);font-size:13px}.completion-timeline button{margin-top:14px;min-height:44px}.unknown-dates{line-height:1.6;padding:16px;border-left:3px solid #7557a3}
+#progress-content>.field-hint{line-height:1.6}summary:focus-visible{outline:3px solid #7557a3;outline-offset:3px}
+@media(max-width:700px){.progress-summary{grid-template-columns:1fr;gap:14px}.progress-stat,.progress-panel{padding:20px 16px}.progress-controls{align-items:stretch}.progress-controls label{width:100%}.progress-controls select{width:100%}.completion-chart{gap:6px}}
+#progress-view,.progress-panel,.progress-summary{min-width:0}.completion-chart{max-width:100%}
+/* Keep category controls clear of the 3px focus ring + 3px offset. */
+.goal-category-details{min-width:0;padding:8px 8px 12px;box-sizing:border-box}
+.goal-category-details>input{min-width:0;max-width:100%;margin-bottom:18px;box-sizing:border-box}
+.goal-category-details>.small-button{display:block;max-width:100%;min-height:44px;white-space:normal;overflow-wrap:anywhere;box-sizing:border-box}
+.goal-category-details>.field-hint{margin-top:16px;overflow-wrap:anywhere}
+/* Spacing audit: leave room for keyboard rings and wrap compact action rows. */
+main,.page-header>div,.dialog-heading,.goal-tools{min-width:0}
+.dialog-heading{gap:16px}.dialog-heading .icon-button{flex-shrink:0}
+.dialog-actions,.view-switch,.backup-actions,.goal-tools,.step-controls{gap:12px;flex-wrap:wrap}
+.dialog-actions button,.card-footer button,.goal-tools button{max-width:100%;white-space:normal;overflow-wrap:anywhere}
+.card-footer,.goal-top{flex-wrap:wrap;gap:16px}
+.filters{gap:12px;padding:8px}.filters button{min-width:0;white-space:normal;overflow-wrap:anywhere}
+.filters button:focus-visible,.icon-option:focus-visible,.emoji-grid button:focus-visible{outline:3px solid #7557a3;outline-offset:3px}
+.icon-section{padding:8px}.icon-options,.emoji-grid{gap:12px;grid-template-columns:repeat(auto-fit,minmax(40px,1fr))}
+.icon-section h3{margin:20px 0 12px}.emoji-grid{padding:8px;margin-top:16px}
+.add-step{gap:12px}.step{gap:12px;flex-wrap:wrap}.step-controls{margin-left:auto}
+.goal-category-details>summary,.goal-icon-details>summary{overflow-wrap:anywhere}
+.category-badge{margin-bottom:14px}
+.warning button{margin:12px 12px 0 0;white-space:normal;overflow-wrap:anywhere}
+@media(max-width:700px){
+ .sidebar{gap:16px;flex-wrap:wrap}.sidebar-bottom{min-width:0}.backup-actions{justify-content:flex-end;gap:12px}
+ .step-check{flex-basis:100%}.step-controls{gap:12px}.filters{gap:10px}.filters button{padding:9px 6px}
+ .dialog-actions{gap:14px}.view-switch{gap:12px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to goals</a>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="#main" aria-label="Mint Goals home"><span class="brand-icon" aria-hidden="true">✳</span><span>mint<span class="brand-small">GOALS</span></span></a>
+<div class="side-note"><span class="eyebrow">YOUR LITTLE SPACE</span><p>Big ideas.<br>Small steps.<br><em>Your pace.</em></p></div>
+<div class="sidebar-bottom"><span class="local-dot" aria-hidden="true"></span> <span id="save-state" role="status">Loading this browser…</span><p>Saved on this browser only. Export backups.</p><div class="backup-actions"><button id="export" class="text-button">Export backup</button><button id="import" class="text-button">Import backup</button></div><input id="import-file" type="file" accept="application/json,.json" hidden></div>
+</aside>
+<main id="main">
+<header class="page-header"><div><span class="eyebrow">A LITTLE CLARITY, A LITTLE MOMENTUM</span><h1>Make room for your goals.</h1><p>Write it down. Find your next step. Make it yours.</p></div><button id="new-goal" class="primary"><span aria-hidden="true">＋</span> New goal</button></header>
+<div id="storage-warning" class="warning" role="alert" hidden></div>
+<section class="overview" aria-label="Your goal summary"><div><span class="overview-icon" aria-hidden="true">↗</span><div><strong id="active-count">0</strong><span>goals in progress</span></div></div><div><span class="overview-icon lavender" aria-hidden="true">✓</span><div><strong id="step-count">0</strong><span>steps taken</span></div></div><div><span class="overview-icon" aria-hidden="true">✳</span><div><strong id="completed-count">0</strong><span>goals completed</span></div></div></section>
+<nav class="view-switch" aria-label="Choose view"><button id="show-goals" class="secondary" aria-pressed="true">Goals</button><button id="show-progress" class="secondary" aria-pressed="false">Progress</button></nav>
+<section id="progress-view" hidden aria-labelledby="progress-heading"><div class="section-heading"><h2 id="progress-heading">Look how far you’ve come.</h2></div><p class="progress-explainer">Currently completed goals, including archived completions. Each goal counts once at its latest completion; reopening removes it from this view.</p><div class="progress-controls"><label for="progress-period">Show by</label><select id="progress-period"><option value="week">Week · last 8 weeks</option><option value="month">Month · last 12 months</option></select><label for="progress-category">Category</label><select id="progress-category"><option value="">All categories</option></select></div><div id="progress-content"></div></section>
+<section id="goals-view" class="goals-section" aria-labelledby="goals-heading"><div class="section-heading"><h2 id="goals-heading">Your goals</h2><div class="filters" role="group" aria-label="Filter goals"><button data-filter="active" aria-pressed="true">In progress</button><button data-filter="completed" aria-pressed="false">Completed</button><button data-filter="archived" aria-pressed="false">Archived</button></div></div><div class="category-bar"><label for="category-filter">Category</label><select id="category-filter"><option value="">All goals</option></select><button id="manage-categories" class="text-button">Manage categories</button></div><div id="goals" class="goals-grid"></div></section>
+<footer>One step is still a step. <span aria-hidden="true">✳</span></footer>
+</main></div>
+<dialog id="editor"><form id="editor-form"><div class="dialog-heading"><span class="eyebrow" id="editor-kicker">A FRESH START</span><button type="button" class="icon-button" id="close-editor" aria-label="Close editor">×</button></div><h2 id="editor-title">A new goal</h2><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="cancel-editor" class="secondary">Cancel</button><button type="submit" class="primary" id="save-editor">Save goal</button></div></form></dialog>
+<div id="status" class="toast" role="status" aria-live="polite"></div>
+<script>
+(()=>{
+// Additive JSON migration: old completion dates stay unknown, never inferred.
+function completionFields(goal) {
+ const completedAt=goal.completedAt??null, completionDate=goal.completionDate??null;
+ const complete=goal.status==='completed'||(goal.status==='archived'&&goal.previousStatus==='completed');
+ if(completedAt!==null){
+  if(typeof completedAt!=='string'||!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(completedAt)||!Number.isFinite(Date.parse(completedAt))||new Date(completedAt).toISOString()!==completedAt||Date.parse(completedAt)<Date.parse(goal.createdAt)||Date.parse(completedAt)>Date.now()+300000)throw new Error('Invalid completion timestamp.');
+ }
+ if(completionDate!==null){
+  if(typeof completionDate!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(completionDate)||!Number.isFinite(Date.parse(completionDate))||new Date(completionDate).toISOString().slice(0,10)!==completionDate||completionDate>new Date(Date.now()+86400000).toISOString().slice(0,10))throw new Error('Invalid completion date.');
+ }
+ if((completedAt||completionDate)&&!complete)throw new Error('Only completed goals may have a completion date.');
+ if(completedAt&&completionDate)throw new Error('Choose a timestamp or a manual completion date, not both.');
+ return {completedAt,completionDate};
+}
+function setCompleted(goal,completed,now=new Date()){
+ goal.status=completed?'completed':'active';goal.completedAt=completed?now.toISOString():null;goal.completionDate=null;
+ return goal;
+}
+
+const STORAGE_KEY = 'mint-goals.v1';
+const LIMITS = { goals: 200, tasks: 200, title: 140, description: 3000, task: 300, emoji: 24 };
+const uid = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
+function cleanText(value, max, required = false) {
+  if (typeof value !== 'string') throw new Error('Please enter text.');
+  const text = value.trim();
+  if (required && !text) throw new Error('Please enter a name.');
+  if (text.length > max) throw new Error(`Please use ${max} characters or fewer.`);
+  return text;
+}
+function createGoal(title, description = '') {
+  return { id: uid(), title: cleanText(title, LIMITS.title, true), description: cleanText(description, LIMITS.description), icon: 'target', categoryId: '', tasks: [], status: 'active', completedAt: null, completionDate: null, createdAt: new Date().toISOString() };
+}
+function createTask(text, emoji = '✨') {
+  return { id: uid(), text: cleanText(text, LIMITS.task, true), emoji: cleanText(emoji, LIMITS.emoji), done: false };
+}
+function progress(goal) {
+  const done = goal.tasks.filter(t => t.done).length;
+  return { done, total: goal.tasks.length, percent: goal.tasks.length ? Math.round(done / goal.tasks.length * 100) : goal.status === 'completed' ? 100 : 0 };
+}
+function moveTask(goal, id, direction) {
+  const from = goal.tasks.findIndex(t => t.id === id), to = from + direction;
+  if (from < 0 || to < 0 || to >= goal.tasks.length || ![-1, 1].includes(direction)) return false;
+  [goal.tasks[from], goal.tasks[to]] = [goal.tasks[to], goal.tasks[from]];
+  return true;
+}
+function validateBackup(raw, newIds = false) {
+  if (!raw || ![1,2].includes(raw.version) || !Array.isArray(raw.goals) || raw.goals.length > LIMITS.goals) throw new Error('Choose a valid Mint Goals backup (up to 200 goals).');
+  const ids = new Set();
+  return raw.goals.map(g => {
+    if (!g || !['active', 'completed', 'archived'].includes(g.status) || !Array.isArray(g.tasks) || g.tasks.length > LIMITS.tasks) throw new Error('This backup contains an invalid goal.');
+    const goal = createGoal(g.title, g.description);
+    if (!newIds && (typeof g.id !== 'string' || !g.id || ids.has(g.id))) throw new Error('This backup contains duplicate or invalid goal IDs.');
+    goal.id = newIds ? goal.id : g.id; ids.add(goal.id);
+    goal.icon = typeof g.icon === 'string' ? g.icon : 'target'; goal.categoryId = typeof g.categoryId === 'string' ? g.categoryId : '';
+    goal.status = g.status; goal.previousStatus = g.previousStatus === 'completed' ? 'completed' : 'active';
+    if (typeof g.createdAt !== 'string' || g.createdAt.length > 40 || !Number.isFinite(Date.parse(g.createdAt))) throw new Error('This backup contains an invalid creation date.');
+    goal.createdAt = g.createdAt;
+    Object.assign(goal, completionFields({...g, createdAt:goal.createdAt}));
+    const taskIds = new Set();
+    goal.tasks = g.tasks.map(t => {
+      if (!t || typeof t.done !== 'boolean' || (!newIds && (typeof t.id !== 'string' || !t.id || taskIds.has(t.id)))) throw new Error('This backup contains an invalid step.');
+      const task = createTask(t.text, t.emoji);
+      task.id = newIds ? task.id : t.id; taskIds.add(task.id); task.done = t.done;
+      return task;
+    });
+    return goal;
+  });
+}
+
+function assertStateSize(state) { if (new TextEncoder().encode(JSON.stringify(state)).byteLength > 1_990_000) throw new Error("Your goals are at the storage size limit. This change was not added. Export a backup before making more room."); }
+
+const iconGroups = {
+  'Learning & work': ['book','graduation','pencil','lightbulb','laptop','briefcase','language','target'],
+  'Creativity & play': ['palette','music','camera','film','pen','sparkles','headphones','game'],
+  'Health & wellbeing': ['heart','leaf','sun','moon','activity','dumbbell','water','smile'],
+  'Everyday life': ['home','coffee','globe','plane','wallet','people','plant','check']
+};
+const paths = {
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ book:'<path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-2-1-6-2-10 1v15"/>',
+ graduation:'<path d="m2 8 10-5 10 5-10 5L2 8Zm4 3v6c4 3 8 3 12 0v-6m4-3v9"/>',
+ pencil:'<path d="m4 16 12-12 4 4L8 20l-5 1 1-5ZM14 6l4 4"/>',
+ lightbulb:'<path d="M8 15a7 7 0 1 1 8 0v3H8v-3Zm1 6h6m-3-3v-7m-3-1 3 2 3-2"/>',
+ laptop:'<rect x="4" y="4" width="16" height="13" rx="2"/><path d="m4 17-2 3h20l-2-3"/>',
+ briefcase:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c6 3 12 3 18 0m-9 1v4"/>',
+ language:'<path d="M3 5h12M9 2v3M5 5c1 6 4 8 9 10M13 5c-1 6-5 10-10 12m11 4 4-12 4 12m-7-4h6"/>',
+ palette:'<path d="M12 3a9 9 0 1 0 0 18c3 0 1-4 4-4h2c5-1 4-14-6-14Z"/><circle cx="7" cy="9" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="17" cy="9" r="1"/><circle cx="6" cy="14" r="1"/>',
+ music:'<path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="3"/><ellipse cx="17" cy="16" rx="3" ry="3"/>',
+ camera:'<path d="M3 7h4l2-3h6l2 3h4v14H3Z"/><circle cx="12" cy="13" r="4"/>',
+ film:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4m10-8h4m-4 8h4M7 12h10"/>',
+ pen:'<path d="m3 21 5-14 10-4 3 3-4 10-14 5Zm0 0 9-9m-4-5 9 9"/><circle cx="12" cy="12" r="2"/>',
+ sparkles:'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3ZM3 2v4M1 4h4m15 14v4m-2-2h4"/>',
+ headphones:'<path d="M3 14v-3a9 9 0 0 1 18 0v3"/><rect x="3" y="12" width="4" height="9" rx="2"/><rect x="17" y="12" width="4" height="9" rx="2"/>',
+ game:'<path d="M6 7h12c3 0 6 14 2 14l-5-4H9l-5 4C0 21 3 7 6 7Z"/><path d="M5 12h6m-3-3v6m8-3h.1m3 2h.1"/>',
+ heart:'<path d="M12 21 3 12C-3 5 7-1 12 6c5-7 15-1 9 6l-9 9Z"/>',
+ leaf:'<path d="M20 3C3 1 1 12 7 18c6 6 17-1 13-15ZM4 21 16 9"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/>',
+ moon:'<path d="M21 14A9 9 0 0 1 10 3a9 9 0 1 0 11 11Z"/>',
+ activity:'<path d="M2 12h5l3-9 4 18 3-9h5"/>',
+ dumbbell:'<path d="M7 5v14M3 8v8m4-4h10m0-7v14m4-11v8M3 12H1m20 0h2"/>',
+ water:'<path d="M12 2S4 11 4 16a8 8 0 0 0 16 0c0-5-8-14-8-14Z"/>',
+ smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14c2 4 6 4 8 0M8 8h.1M16 8h.1"/>',
+ home:'<path d="m2 11 10-9 10 9M5 9v12h14V9M9 21v-8h6v8"/>',
+ coffee:'<path d="M3 8h14v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm14 1h2a3 3 0 0 1 0 6h-2M6 2v3m5-3v3"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+ plane:'<path d="m22 2-8 20-3-9-9-3L22 2Zm0 0L11 13"/>',
+ wallet:'<path d="M21 8V5H5a3 3 0 0 0 0 6h16v10H5a3 3 0 0 1-3-3V8m19 5h-6v5h6m-4-2.5h.1"/>',
+ people:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-3a7 7 0 0 1 14 0v3M16 3a4 4 0 0 1 0 8m2 3c4 1 4 4 4 7"/>',
+ plant:'<path d="M8 21h8l2-8H6l2 8Zm4-8V6m0 4C3 10 3 3 3 3c7 0 9 4 9 7Zm0-2c0-6 8-6 8-6s0 6-8 6Z"/>',
+ check:'<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>'
+};
+function icon(name) { const span=document.createElement('span'); span.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.target}</svg>`; return span.firstChild; }
+
+
+// All form work is local until the whole goal passes validation.
+function stageCategory(categories, name) {
+  const cleaned = cleanText(name, 60, true);
+  const existing = categories.find(category => category.name.toLowerCase() === cleaned.toLowerCase());
+  if (existing) return { categories, categoryId: existing.id };
+  if (categories.length >= 50) throw new Error('You can keep up to 50 categories.');
+  const category = { id: uid(), name: cleaned };
+  return { categories: [...categories, category], categoryId: category.id };
+}
+
+function prepareGoalSave(state, draft, goalId = null) {
+  const title = cleanText(draft.title, LIMITS.title, true);
+  const description = cleanText(draft.description, LIMITS.description);
+  const existing = goalId ? state.goals.find(goal => goal.id === goalId) : null;
+  if (goalId && !existing) throw new Error('This goal is no longer available.');
+  if (!existing && state.goals.length >= LIMITS.goals) throw new Error('You can keep up to 200 goals.');
+  const categories = draft.categories.map(category => ({ ...category }));
+  if (categories.length > 50) throw new Error('You can keep up to 50 categories.');
+  if (draft.categoryId && !categories.some(category => category.id === draft.categoryId)) throw new Error('Please choose an available category.');
+  const goal = { ...(existing || createGoal(title, description)), title, description, icon: draft.icon, categoryId: draft.categoryId };
+  if (!existing) {
+    const steps = draft.steps.filter(step => cleanText(step.text, LIMITS.task));
+    if (steps.length > LIMITS.tasks) throw new Error('A goal can have up to 200 steps.');
+    goal.tasks = steps.map(step => createTask(step.text, step.emoji));
+  }
+  const nextState = { ...state, categories, goals: existing ? state.goals.map(item => item.id === goalId ? goal : item) : [goal, ...state.goals] };
+  assertStateSize(nextState);
+  return nextState;
+}
+
+// Calendar buckets use the viewer's timezone; elapsed durations use exact instants.
+const DAY = 86_400_000;
+
+function isCompleted(goal) {
+  return Boolean(goal && (goal.status === 'completed' ||
+    (goal.status === 'archived' && goal.previousStatus === 'completed')));
+}
+
+function validDateKey(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const date = new Date(`${value}T00:00:00.000Z`);
+  return Number.isFinite(date.getTime()) && date.toISOString().slice(0, 10) === value;
+}
+
+function instant(value) {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2})$/.test(value) || !validDateKey(value.slice(0, 10))) return null;
+  const result = Date.parse(value);
+  return Number.isFinite(result) ? result : null;
+}
+
+function calendarDate(key) { return new Date(`${key}T00:00:00.000Z`); }
+function keyOf(date) { return date.toISOString().slice(0, 10); }
+function monday(key) {
+  const date = calendarDate(key);
+  date.setUTCDate(date.getUTCDate() - ((date.getUTCDay() + 6) % 7));
+  return keyOf(date);
+}
+
+/**
+ * One current completion per goal, including archived completed goals. Last duplicate
+ * ID wins. Unknown dates stay in the timeline but never enter a time bucket.
+ * Manual completion dates have deliberately unknown durations. medianDays is an
+ * unrounded elapsed-day median across all filtered precise, nonnegative durations.
+ */
+function summarizeProgress(goals, { period = 'week', categoryId = '', now = new Date(), timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone } = {}) {
+  period = period === 'month' ? 'month' : 'week';
+  let localFormatter;
+  try {
+    localFormatter = new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+    timeZone = localFormatter.resolvedOptions().timeZone;
+  } catch {
+    timeZone = 'UTC';
+    localFormatter = new Intl.DateTimeFormat('en-US', { timeZone, year: 'numeric', month: '2-digit', day: '2-digit' });
+  }
+  const localKey = value => {
+    const parts = Object.fromEntries(localFormatter.formatToParts(value).map(p => [p.type, p.value]));
+    return `${parts.year.padStart(4, '0')}-${parts.month}-${parts.day}`;
+  };
+  const nowDate = now instanceof Date && Number.isFinite(now.getTime()) ? now : new Date();
+  const today = localKey(nowDate);
+  const first = calendarDate(period === 'week' ? monday(today) : `${today.slice(0, 7)}-01`);
+  const count = period === 'week' ? 8 : 12;
+  const labelFormat = new Intl.DateTimeFormat('en-US', period === 'week'
+    ? { timeZone: 'UTC', month: 'short', day: 'numeric' }
+    : { timeZone: 'UTC', month: 'short', year: 'numeric' });
+  const buckets = Array.from({ length: count }, (_, index) => {
+    const date = new Date(first);
+    if (period === 'week') date.setUTCDate(date.getUTCDate() - (count - 1 - index) * 7);
+    else date.setUTCMonth(date.getUTCMonth() - (count - 1 - index));
+    return { key: keyOf(date).slice(0, period === 'week' ? 10 : 7), label: labelFormat.format(date), count: 0 };
+  });
+  const bucketMap = new Map(buckets.map(bucket => [bucket.key, bucket]));
+  const unique = new Map();
+  for (const goal of Array.isArray(goals) ? goals : []) {
+    if (goal && typeof goal === 'object') unique.set(typeof goal.id === 'string' && goal.id ? goal.id : Symbol(), goal);
+  }
+  const timeline = [];
+  for (const goal of unique.values()) {
+    const matchesCategory = !categoryId || (categoryId === 'uncategorized' ? !goal.categoryId : goal.categoryId === categoryId);
+    if (!isCompleted(goal) || !matchesCategory) continue;
+    const completed = instant(goal.completedAt);
+    const created = instant(goal.createdAt);
+    const dateKey = completed !== null ? localKey(completed) : validDateKey(goal.completionDate) ? goal.completionDate : null;
+    const dateSource = completed !== null ? 'precise' : dateKey ? 'manual' : 'unknown';
+    const durationDays = completed !== null && created !== null && completed >= created ? (completed - created) / DAY : null;
+    timeline.push({ goal, dateKey, dateSource, durationDays });
+    if (dateKey) {
+      const bucket = bucketMap.get(period === 'week' ? monday(dateKey) : dateKey.slice(0, 7));
+      if (bucket) bucket.count++;
+    }
+  }
+  timeline.sort((a, b) => {
+    if (a.dateKey !== b.dateKey) return a.dateKey === null ? 1 : b.dateKey === null ? -1 : b.dateKey.localeCompare(a.dateKey);
+    return (instant(b.goal.completedAt) ?? 0) - (instant(a.goal.completedAt) ?? 0);
+  });
+  const durations = timeline.map(item => item.durationDays).filter(value => value !== null).sort((a, b) => a - b);
+  const middle = Math.floor(durations.length / 2);
+  const medianDays = durations.length ? durations.length % 2 ? durations[middle] : (durations[middle - 1] + durations[middle]) / 2 : null;
+  return { period, timeZone, buckets, timeline, completedCount: timeline.length, unknownCount: timeline.filter(item => item.dateSource === 'unknown').length, medianDays };
+}
+
+const OFFLINE_KEY='mint-goals.offline.v1';
+function readLocal(storage){
+ const raw=storage.getItem(OFFLINE_KEY);if(raw===null)return {state:null,version:0};
+ let data;try{data=JSON.parse(raw);}catch{throw new Error('Saved browser data could not be read. It has not been overwritten. Keep this browser profile and restore a backup in a separate browser if needed.');}
+ if(!data||!Number.isSafeInteger(data.version)||data.version<1||!data.state)throw new Error('Saved browser data is invalid. It has not been overwritten.');
+ return data;
+}
+function writeLocal(storage,state,version){
+ const current=readLocal(storage);
+ if(current.version!==version)return {conflict:true,...current};
+ if(version>=Number.MAX_SAFE_INTEGER)throw new Error('The save counter is full. Export a backup.');
+ const next={state,version:version+1};storage.setItem(OFFLINE_KEY,JSON.stringify(next));return next;
+}
+
+const $ = id => document.getElementById(id);
+const el = (tag, cls, text) => { const n=document.createElement(tag); if(cls)n.className=cls; if(text!==undefined)n.textContent=text; return n; };
+const button = (text, cls, action, label) => { const b=el('button',cls,text); b.type='button'; if(label)b.setAttribute('aria-label',label); b.addEventListener('click',action); return b; };
+const emojis=['✨','🌱','📚','✍️','🎨','🎵','💡','🎯','💻','🧠','📝','📖','💪','🏃','🧘','🥗','💧','😴','🚶','❤️','🏡','🧹','🛒','🍳','☕','💰','📅','📞','🌍','✈️','🌸','☀️','🎸','📸','🧵','🛠️','🤝','🐾','🎉','✅'];
+let state={version:2,goals:[],categories:[]}, acceptedState=JSON.stringify(state), revision=0, loaded=false, filter='active', categoryFilter='', saving=false, dirty=false, blocked=false, conflict=false, toastTimer, dialogAction, dialogOrigin;
+function announce(message){$('status').textContent=message;clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('status').textContent='',5500);}
+function setSave(text){$('save-state').textContent=text;}
+function warning(message, actions=[]){const box=$('storage-warning');box.replaceChildren(el('div','',message));actions.forEach(a=>box.append(button(a.text,'small-button',a.action)));box.hidden=false;}
+function clearWarning(){$('storage-warning').hidden=true;}
+function validateState(data,newIds=false){const goals=validateBackup(data,newIds);if(!Array.isArray(data.categories)||data.categories.length>50)throw new Error('Invalid category list.');const seen=new Set(), mapping=new Map();const categories=data.categories.map(c=>{if(!c||typeof c.id!=='string'||!c.id||seen.has(c.id))throw new Error('Invalid category.');seen.add(c.id);const id=newIds?uid():c.id;mapping.set(c.id,id);return {id,name:cleanText(c.name,60,true)};});goals.forEach(g=>{g.categoryId=mapping.get(g.categoryId)||'';if(!paths[g.icon])g.icon='target';});const result={version:2,goals,categories};assertStateSize(result);return result;}
+async function load(){setSave('Loading this browser…');$('new-goal').disabled=true;try{const data=readLocal(localStorage);state=data.state?validateState(data.state):{version:2,goals:[],categories:[]};revision=data.version;acceptedState=JSON.stringify(state);loaded=true;dirty=false;blocked=false;conflict=false;clearWarning();setSave('Saved in this browser');render();}catch(e){warning(e.message||'Browser storage is unavailable. Try a normal browser window, or serve the app on localhost.',[{text:'Try loading again',action:load}]);setSave('Storage unavailable');}finally{$('new-goal').disabled=!loaded;}}
+function changed(message){try{assertStateSize(state);}catch(error){state=JSON.parse(acceptedState);render();announce(error.message);return;}acceptedState=JSON.stringify(state);dirty=true;render();if(message)announce(message);save();}
+async function save(){if(saving||blocked||!dirty||!loaded)return;saving=true;dirty=false;const snapshot=JSON.parse(JSON.stringify(state));setSave('Saving in this browser…');try{const result=writeLocal(localStorage,snapshot,revision);if(result.conflict){conflict=true;throw new Error('Another tab changed these goals. Export your edits first, then load the saved version. Use one editing tab at a time.');}revision=result.version;setSave('Saved in this browser');clearWarning();}catch(e){dirty=true;blocked=true;setSave('Changes not saved');warning(e.message||'Browser storage could not save your changes. Keep this tab open and export your edits.',[{text:'Export your edits',action:exportBackup},...(conflict?[{text:'Load saved version…',action:confirmReload}]:[{text:'Retry save',action:()=>{blocked=false;save();}}])]);}finally{saving=false;if(dirty&&!blocked)save();}}
+function confirmReload(){openDialog('Load the saved version?','PROTECT YOUR EDITS',fields=>{fields.append(el('p','field-hint','This replaces the unsaved changes in this tab with the version saved in this browser. Export your edits first if you want to keep them.'));},async()=>{closeDialog();loaded=false;await load();},'Replace with saved version');}
+function openDialog(title,kicker,build,onSave,saveLabel='Save'){dialogOrigin=document.activeElement;$('editor-title').textContent=title;$('editor-kicker').textContent=kicker;$('editor-error').textContent='';$('save-editor').textContent=saveLabel;$('editor-fields').replaceChildren();build($('editor-fields'));dialogAction=onSave;$('editor').showModal();const first=$('editor-fields').querySelector('input,textarea,select,button');first?.focus();}
+function closeDialog(){$('editor').close();dialogAction=null;dialogOrigin?.focus();}
+$('close-editor').onclick=closeDialog;$('cancel-editor').onclick=closeDialog;$('editor').addEventListener('close',()=>{dialogOrigin?.focus();});
+$('editor-form').onsubmit=async e=>{e.preventDefault();try{await dialogAction?.();}catch(error){$('editor-error').textContent=error.message;}};
+function field(parent,label,id,value,max,multiline=false){const l=el('label','',label);l.htmlFor=id;const input=el(multiline?'textarea':'input');input.id=id;input.value=value;input.maxLength=max;if(!multiline)input.type='text';parent.append(l,input);return input;}
+function iconPicker(parent,selected,onSelect){const wrap=el('div','icon-section');wrap.setAttribute('aria-label','Choose a goal icon');let current=selected;for(const [group,names]of Object.entries(iconGroups)){wrap.append(el('h3','',group));const grid=el('div','icon-options');names.forEach(name=>{const b=button('','icon-option',()=>{current=name;wrap.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.icon===name)));onSelect(name);},name);b.dataset.icon=name;b.title=name;b.setAttribute('aria-pressed',String(name===current));b.append(icon(name));grid.append(b);});wrap.append(grid);}parent.append(wrap);}
+function editGoal(goal=null){
+  if(!loaded)return;
+  let name,description,category,newCategory,selected=goal?.icon||'target';
+  let draftCategories=state.categories.map(c=>({...c}));
+  const steps=[];
+  const addCategory=()=>{
+    const staged=stageCategory(draftCategories,newCategory.value);
+    draftCategories=staged.categories;
+    category.replaceChildren(new Option('Uncategorized',''));
+    draftCategories.forEach(c=>category.append(new Option(c.name,c.id)));
+    category.value=staged.categoryId;
+    newCategory.value='';
+  };
+  openDialog(goal?'Edit your goal':'A new goal',goal?'MAKE IT YOURS':'A FRESH START',fields=>{
+    name=field(fields,'Goal name','goal-name',goal?.title||'',140);name.required=true;name.placeholder='What would you like to work toward?';
+    description=field(fields,'Description (optional)','goal-description',goal?.description||'',3000,true);description.placeholder='What does this goal mean to you?';
+    const label=el('label','','Category');label.htmlFor='goal-category';category=el('select');category.id='goal-category';category.append(new Option('Uncategorized',''));
+    draftCategories.forEach(c=>category.append(new Option(c.name,c.id)));category.value=goal?.categoryId||'';
+    fields.append(label,category);
+    const categoryDetails=el('details','goal-category-details');categoryDetails.append(el('summary','','＋ Create a category'));
+    newCategory=field(categoryDetails,'New category name','goal-new-category','',60);newCategory.placeholder='e.g. Learning or Wellbeing';
+    categoryDetails.append(button('Add category','small-button',()=>{try{addCategory();$('editor-error').textContent='';categoryDetails.open=false;category.focus();}catch(error){$('editor-error').textContent=error.message;}}),el('p','field-hint','Your new category is selected automatically and saved with this goal.'));
+    fields.append(categoryDetails);
+    if(!goal){
+      fields.append(el('h3','','Steps (optional)'),el('p','field-hint','Write your first steps here, or add them to the goal later. Blank steps are skipped.'));
+      const list=el('div','goal-draft-steps');fields.append(list);
+      let stepSequence=0;
+      const addStep=()=>{
+        if(steps.length>=LIMITS.tasks){$('editor-error').textContent='A goal can have up to 200 steps.';return;}
+        const row=el('div'),id=++stepSequence;
+        const text=field(row,'Step',`goal-step-${id}`,'',300);text.placeholder='A small, doable next step…';
+        const emojiLabel=el('label','','Emoji (optional)');emojiLabel.htmlFor=`goal-step-emoji-${id}`;
+        const emoji=el('select');emoji.id=emojiLabel.htmlFor;emoji.append(new Option('No emoji',''));emojis.forEach(value=>emoji.append(new Option(value,value)));emoji.value='✨';
+        const entry={text,emoji};steps.push(entry);
+        row.append(emojiLabel,emoji,button('Remove step','text-button goal-remove-step',()=>{steps.splice(steps.indexOf(entry),1);row.remove();addStepButton.focus();}));list.append(row);
+        return text;
+      };
+      const addStepButton=button('＋ Add step','small-button goal-add-step',()=>addStep()?.focus());fields.append(addStepButton);addStep();
+    }
+    const details=el('details','goal-icon-details');details.append(el('summary','','Choose a goal icon'));iconPicker(details,selected,id=>selected=id);fields.append(details);
+  },()=>{
+    if(newCategory.value.trim())addCategory();
+    state=prepareGoalSave(state,{title:name.value,description:description.value,categoryId:category.value,icon:selected,categories:draftCategories,steps:steps.map(step=>({text:step.text.value,emoji:step.emoji.value}))},goal?.id);
+    if(!goal){filter='active';categoryFilter='';switchView('goals');}
+    closeDialog();changed(goal?'Goal updated.':'Your goal is ready.');
+  },goal?'Save changes':'Create goal');
+}
+function chooseGoalIcon(goal){let chosen=goal.icon;openDialog('An icon for your goal','A LITTLE PERSONALITY',fields=>iconPicker(fields,chosen,id=>chosen=id),()=>{goal.icon=chosen;closeDialog();changed('Goal icon updated.');},'Use this icon');}
+function chooseEmoji(initial,onSave){let value;openDialog('Make this step yours','CHOOSE AN EMOJI',fields=>{value=field(fields,'Emoji (or leave blank)','emoji-value',initial,24);const grid=el('div','emoji-grid');emojis.forEach(emoji=>{const b=button(emoji,'',()=>{value.value=emoji;grid.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x.textContent===emoji)));},`Choose ${emoji}`);b.setAttribute('aria-pressed',String(initial===emoji));grid.append(b);});fields.append(grid,el('p','field-hint','Pick one above, or use your device’s emoji keyboard.'));},()=>{const emoji=cleanText(value.value,24);closeDialog();onSave(emoji);},'Use emoji');}
+function editTask(goal,task){let input,emoji;openDialog('Edit your step','ONE STEP AT A TIME',fields=>{input=field(fields,'Step','task-text',task.text,300);input.required=true;emoji=field(fields,'Emoji (optional)','task-emoji',task.emoji,24);const grid=el('div','emoji-grid');emojis.forEach(e=>grid.append(button(e,'',()=>emoji.value=e,`Choose ${e}`)));fields.append(grid);},()=>{task.text=cleanText(input.value,300,true);task.emoji=cleanText(emoji.value,24);closeDialog();changed('Step updated.');},'Save step');}
+function manageCategories(){if(!loaded)return;let inputs=[],newName;openDialog('Your categories','A PLACE FOR EVERY GOAL',fields=>{fields.append(el('p','field-hint','Rename a category below, or add a new one. Your goals stay linked when you rename.'));state.categories.forEach((c,i)=>{const input=field(fields,`Category ${i+1}`,`category-${i}`,c.name,60);input.required=true;inputs.push({id:c.id,input});});newName=field(fields,'New category (optional)','new-category','',60);newName.placeholder='e.g. Learning, Wellbeing, Creative projects';},()=>{const updated=inputs.map(c=>({id:c.id,name:cleanText(c.input.value,60,true)}));const name=cleanText(newName.value,60);if(name){if(updated.length>=50)throw new Error('You can keep up to 50 categories.');updated.push({id:uid(),name});}if(new Set(updated.map(c=>c.name.toLowerCase())).size!==updated.length)throw new Error('Please give each category a different name.');state.categories=updated;closeDialog();changed('Categories saved.');},'Save categories');}
+let currentView='goals', progressPeriod='week', progressCategory='';
+const progressZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
+function switchView(view){currentView=view;document.querySelector('.overview').hidden=view==='progress';$('goals-view').hidden=view!=='goals';$('progress-view').hidden=view!=='progress';$('show-goals').setAttribute('aria-pressed',String(view==='goals'));$('show-progress').setAttribute('aria-pressed',String(view==='progress'));renderProgress();}
+function backfillDate(goal){let input;openDialog('Completion date','YOUR RECORD',fields=>{fields.append(el('p','field-hint','Only add a date you know. Leaving this blank keeps the date unknown. A manually entered date appears on the chart, but is excluded from typical duration because the exact time is unknown.'));input=field(fields,'Date completed (optional)','completion-date',goal.completionDate||'',10);input.type='date';const today=new Date();input.max=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;},()=>{const candidate={...goal,completedAt:null,completionDate:input.value||null};if(input.value&&input.value>input.max)throw new Error('Choose today or an earlier date.');Object.assign(goal,completionFields(candidate));closeDialog();changed('Completion date updated.');},'Save date');}
+function renderProgress(){
+ if(!$('progress-category'))return;
+ const select=$('progress-category');select.replaceChildren(new Option('All categories',''),new Option('Uncategorized','uncategorized'));state.categories.forEach(c=>select.append(new Option(c.name,c.id)));select.value=progressCategory;
+ const box=$('progress-content');box.replaceChildren();if(!loaded){box.append(el('p','','Load your goals to see progress.'));return;}
+ const report=summarizeProgress(state.goals,{period:progressPeriod,categoryId:progressCategory,timeZone:progressZone});
+ const summary=el('div','progress-summary');
+ const total=el('div','progress-stat');total.append(el('strong','',String(report.completedCount)),el('span','','currently completed'));
+ const typical=el('div','progress-stat');typical.append(el('strong','',report.medianDays===null?'Not known yet':`${new Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(report.medianDays)} days`),el('span','','typical elapsed time (median)'));
+ summary.append(total,typical);box.append(summary,el('p','field-hint','Typical time is elapsed calendar time from goal creation to its latest recorded completion—not hours worked. Only exact recorded timestamps are included; older and manually dated goals are excluded.'));
+ const panel=el('section','progress-panel');panel.append(el('h3','',progressPeriod==='week'?'Completions by week':'Completions by month'),el('p','field-hint',`Dates use ${report.timeZone}. Weeks start Monday. The chart shows only dates within this window.`));
+ const chart=el('div','completion-chart');chart.setAttribute('aria-hidden','true');const max=Math.max(1,...report.buckets.map(b=>b.count));report.buckets.forEach(b=>{const col=el('div','chart-column');const bar=el('div','chart-bar');bar.style.height=`${b.count/max*120}px`;col.append(el('span','chart-count',String(b.count)),bar,el('span','chart-label',b.label));chart.append(col);});panel.append(chart);
+ const details=el('details','chart-data');details.append(el('summary','','View chart as a table'));const table=el('table');const caption=el('caption','','Completed goals by '+progressPeriod);table.append(caption);const head=el('thead'),hr=el('tr');['Period starting','Goals completed'].forEach(t=>{const th=el('th','',t);th.scope='col';hr.append(th);});head.append(hr);table.append(head);const body=el('tbody');report.buckets.forEach(b=>{const row=el('tr');const th=el('th','',b.key);th.scope='row';row.append(th,el('td','',String(b.count)));body.append(row);});table.append(body);details.append(table);panel.append(details);box.append(panel);
+ if(report.unknownCount)box.append(el('p','unknown-dates',`${report.unknownCount} completed ${report.unknownCount===1?'goal has':'goals have'} an unknown date and ${report.unknownCount===1?'is':'are'} not plotted. Add a known date below if you wish.`));
+ const timeline=el('section','progress-panel');timeline.append(el('h3','','Your completed-goal timeline'),el('p','field-hint','All completion dates, not just the chart window. Category filter applies to everything in this view.'));
+ if(!report.timeline.length)timeline.append(el('p','','No completed goals in this category yet. When you finish one, its completion date will appear here.'));
+ const list=el('ol','completion-timeline');report.timeline.forEach(item=>{const g=item.goal,row=el('li');const title=el('strong','',g.title);const category=state.categories.find(c=>c.id===g.categoryId)?.name||'Uncategorized';row.append(title,el('span','timeline-meta',`${category}${g.status==='archived'?' · Archived':''}`),el('span','timeline-date',item.dateKey?`${item.dateKey}${item.dateSource==='manual'?' · Entered by you':''}`:'Completion date unknown'));if(item.durationDays!==null)row.append(el('span','timeline-meta',`${new Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(item.durationDays)} days elapsed`));if(!g.completedAt)row.append(button(g.completionDate?'Edit date':'Add known date','small-button',()=>backfillDate(g),`${g.completionDate?'Edit':'Add known'} completion date for ${g.title}`));list.append(row);});timeline.append(list);box.append(timeline);
+}
+$('show-goals').onclick=()=>switchView('goals');$('show-progress').onclick=()=>switchView('progress');$('progress-period').onchange=e=>{progressPeriod=e.target.value;renderProgress();};$('progress-category').onchange=e=>{progressCategory=e.target.value;renderProgress();};
+function render(){renderProgress();renderCategories();document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===filter)));const live=state.goals.filter(g=>g.status!=='archived');$('active-count').textContent=live.filter(g=>g.status==='active').length;$('completed-count').textContent=live.filter(g=>g.status==='completed').length;$('step-count').textContent=live.reduce((n,g)=>n+g.tasks.filter(t=>t.done).length,0);const shown=state.goals.filter(g=>g.status===filter&&(!categoryFilter||(categoryFilter==='uncategorized'?!g.categoryId:g.categoryId===categoryFilter)));$('goals').replaceChildren();if(!shown.length){empty();return;}shown.forEach(g=>$('goals').append(goalCard(g)));}
+function renderCategories(){const select=$('category-filter');select.replaceChildren(new Option('All goals',''),new Option('Uncategorized','uncategorized'));state.categories.forEach(c=>select.append(new Option(c.name,c.id)));select.value=categoryFilter;}
+function empty(){const box=el('div','empty-state');box.append(el('div','empty-symbol',filter==='completed'?'✓':filter==='archived'?'↶':'✳'));const title=categoryFilter?'A little space for this category.':filter==='completed'?'Your finished goals will live here.':filter==='archived'?'Nothing tucked away.':'What would you like to make happen?';box.append(el('h3','',title),el('p','',categoryFilter?'Add a goal to this category, or choose All goals to see the rest.':filter==='active'?'Start with something that matters to you. Give it a name, then break it into small, doable steps.':filter==='completed'?'When a goal feels finished, mark it complete. You can revisit or reopen it anytime.':'Archived goals stay safe here. Restore them whenever you’re ready.'));if(filter==='active'){const actions=el('div','empty-actions');actions.append(button('＋ Create a goal','primary',()=>editGoal()));if(!state.goals.length)actions.append(button('Try an example','text-button',example));box.append(actions);}$('goals').append(box);}
+function goalCard(goal){const card=el('article','goal-card');const header=el('div','goal-top');const iconButton=button('','goal-symbol',()=>chooseGoalIcon(goal),`Choose icon for ${goal.title}`);iconButton.append(icon(goal.icon));header.append(iconButton);const tools=el('div','goal-tools');tools.append(button('Edit goal','small-button',()=>editGoal(goal)));header.append(tools);const title=el('h3','goal-title',goal.title);title.id=`goal-${goal.id}`;card.setAttribute('aria-labelledby',title.id);card.append(header,title);if(goal.categoryId){const category=state.categories.find(c=>c.id===goal.categoryId);if(category)card.append(el('span','category-badge',category.name));}if(goal.description)card.append(el('p','goal-description',goal.description));const p=progress(goal),label=el('div','progress-label');label.append(el('span','',`${p.done} of ${p.total} steps complete`),el('span','',`${p.percent}%`));const track=el('div','progress-track');track.setAttribute('role','progressbar');track.setAttribute('aria-label',`${goal.title}: steps completed`);track.setAttribute('aria-valuenow',p.percent);track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','100');const fill=el('div','progress-fill');fill.style.width=`${p.percent}%`;track.append(fill);card.append(label,track);const list=el('ul','steps');goal.tasks.forEach((task,index)=>{const li=el('li',`step${task.done?' done':''}`),checkLabel=el('label','step-check'),check=el('input');check.type='checkbox';check.checked=task.done;check.disabled=goal.status!=='active';check.addEventListener('change',()=>{task.done=check.checked;changed();const target=document.getElementById(`task-${task.id}`);target?.focus();});check.id=`task-${task.id}`;checkLabel.append(check,el('span','step-emoji',task.emoji),el('span','step-text',task.text));li.append(checkLabel);if(goal.status==='active'){const controls=el('div','step-controls');const up=button('↑','',()=>{moveTask(goal,task.id,-1);changed();document.querySelector(`[data-move="${CSS.escape(task.id)}-up"]`)?.focus();},`Move ${task.text} up`);up.disabled=index===0;up.dataset.move=`${task.id}-up`;const down=button('↓','',()=>{moveTask(goal,task.id,1);changed();document.querySelector(`[data-move="${CSS.escape(task.id)}-down"]`)?.focus();},`Move ${task.text} down`);down.disabled=index===goal.tasks.length-1;down.dataset.move=`${task.id}-down`;controls.append(up,down,button('✎','',()=>editTask(goal,task),`Edit ${task.text}`));li.append(controls);}list.append(li);});card.append(list);if(goal.status==='active'){if(!goal.tasks.length)card.append(el('p','no-steps','Every goal starts somewhere. What’s your first step?'));card.append(addTaskForm(goal));}else if(goal.status==='completed')card.append(el('p','complete-note','Completed. A little moment to appreciate how far you came.'));const footer=el('div','card-footer');if(goal.status==='archived'){footer.append(button('↶ Restore goal','complete-button',()=>{goal.status=goal.previousStatus||'active';filter=goal.status;changed('Goal restored.');}));}else{footer.append(button(goal.status==='completed'?'↶ Reopen goal':'✓ Mark complete','complete-button',()=>{if(goal.status==='active'&&goal.tasks.some(t=>!t.done)){openDialog('Complete this goal?','YOUR GOAL, YOUR CALL',fields=>fields.append(el('p','field-hint','Some steps are still unchecked. You can finish the goal as it is, or cancel and keep going. Your step history will stay unchanged.')),()=>{setCompleted(goal,true);filter='completed';closeDialog();changed('Goal completed. Nicely done.');},'Complete goal');}else{setCompleted(goal,goal.status!=='completed');filter=goal.status;changed(goal.status==='completed'?'Goal completed. Nicely done.':'Goal reopened.');}}));footer.append(button('Archive','text-button',()=>{goal.previousStatus=goal.status;goal.status='archived';changed('Goal archived. Restore it anytime from Archived.');}));}card.append(footer);return card;}
+function addTaskForm(goal){const form=el('form','add-step');let selected='✨';const emoji=button(selected,'emoji-trigger',()=>chooseEmoji(selected,value=>{selected=value;emoji.textContent=value||'＋';}),`Choose emoji for a new step in ${goal.title}`);const input=el('input');input.type='text';input.placeholder='Add a small next step…';input.maxLength=300;input.required=true;input.setAttribute('aria-label',`New step for ${goal.title}`);const submit=el('button','','＋');submit.type='submit';submit.setAttribute('aria-label','Add step');form.append(emoji,input,submit);form.onsubmit=e=>{e.preventDefault();try{if(goal.tasks.length>=200)throw new Error('This goal already has 200 steps.');goal.tasks.push(createTask(input.value,selected));changed('Step added.');document.querySelector(`[data-add-goal="${CSS.escape(goal.id)}"] input`)?.focus();}catch(error){announce(error.message);}};form.dataset.addGoal=goal.id;return form;}
+function example(){if(!loaded)return;const g=createGoal('Make more room for reading','A little time away from the screen, with a book I’m excited to pick up.');g.icon='book';g.tasks=[createTask('Choose a book that sparks my curiosity','📚'),createTask('Find a cozy spot to read','☕'),createTask('Read the first chapter','✨')];state.goals.unshift(g);changed('Example added. Make it yours, or archive it anytime.');}
+function exportBackup(){if(!loaded){announce('Load your goals before exporting a backup.');return;}const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=`mint-goals-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Backup downloaded. Keep it somewhere safe.');}
+$('export').onclick=exportBackup;$('import').onclick=()=>{if(!loaded){announce('Load your goals before importing a backup.');return;}$('import-file').click();};
+$('import-file').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{if(file.size>5000000)throw new Error('Please choose a backup smaller than 5 MB.');const data=validateState(JSON.parse(await file.text()),true);assertStateSize({version:2,goals:[...state.goals,...data.goals],categories:[...state.categories,...data.categories]});if(state.goals.length+data.goals.length>200||state.categories.length+data.categories.length>50)throw new Error('This import would exceed 200 goals or 50 categories.');openDialog('Import this backup?','KEEP EVERYTHING',fields=>fields.append(el('p','field-hint',`Add ${data.goals.length} goals and ${data.categories.length} categories. Existing goals will not be replaced. Importing the same backup twice creates duplicates.`)),()=>{state.goals.push(...data.goals);state.categories.push(...data.categories);closeDialog();changed('Backup imported. Your existing goals are unchanged.');},'Add to my goals');}catch(error){announce(error instanceof SyntaxError?'That file isn’t valid JSON. Please choose a Mint Goals backup.':error.message);}};
+$('new-goal').onclick=()=>editGoal();$('manage-categories').onclick=manageCategories;$('category-filter').onchange=e=>{categoryFilter=e.target.value;render();};document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;render();});window.addEventListener('beforeunload',e=>{if(dirty||saving){e.preventDefault();e.returnValue='';}});
+window.addEventListener('storage',event=>{if(event.key!==OFFLINE_KEY||!loaded)return;blocked=true;conflict=true;setSave('Another tab changed your goals');warning('Another tab changed the saved goals. Export any edits you want to keep, then load the saved version. Use one editing tab at a time.',[{text:'Export your edits',action:exportBackup},{text:'Load saved version…',action:confirmReload}]);});
+load();
+
+})();
+</script>
+</body></html>

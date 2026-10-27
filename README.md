@@ -1,6 +1,6 @@
 # Mint Goals
 
-A quiet mint-green goal planner: break goals into steps, choose icons and emojis,
+A mint-green goal planner: break goals into steps, choose icons and emojis,
 organize categories, and see completed goals over time.
 
 ## Start using Mint Goals

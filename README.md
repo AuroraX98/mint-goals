@@ -27,13 +27,6 @@ also deploy their own Sites copy.
 It uses fictional sample answers and simplifies the layout to show the optional
 questions together. The running app may look different at your screen size.
 
-### Earlier app screenshot
-
-![Mint Goals offline app with a sample reading goal, Learning category, two steps and 50% progress](docs/preview.jpg)
-
-Actual app screenshot from the earlier version, before the optional Why this goal?
-pane was added. It uses synthetic sample data—not anyone’s personal goals.
-
 ## Choose your edition
 
 | Edition | Start here | Storage | Internet / account |

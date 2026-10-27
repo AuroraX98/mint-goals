@@ -1,0 +1,41 @@
+export const iconGroups = {
+  'Learning & work': ['book','graduation','pencil','lightbulb','laptop','briefcase','language','target'],
+  'Creativity & play': ['palette','music','camera','film','pen','sparkles','headphones','game'],
+  'Health & wellbeing': ['heart','leaf','sun','moon','activity','dumbbell','water','smile'],
+  'Everyday life': ['home','coffee','globe','plane','wallet','people','plant','check']
+};
+export const paths = {
+ target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/>',
+ book:'<path d="M12 5C8 2 4 3 2 4v15c4-2 7-1 10 1 3-2 6-3 10-1V4c-2-1-6-2-10 1v15"/>',
+ graduation:'<path d="m2 8 10-5 10 5-10 5L2 8Zm4 3v6c4 3 8 3 12 0v-6m4-3v9"/>',
+ pencil:'<path d="m4 16 12-12 4 4L8 20l-5 1 1-5ZM14 6l4 4"/>',
+ lightbulb:'<path d="M8 15a7 7 0 1 1 8 0v3H8v-3Zm1 6h6m-3-3v-7m-3-1 3 2 3-2"/>',
+ laptop:'<rect x="4" y="4" width="16" height="13" rx="2"/><path d="m4 17-2 3h20l-2-3"/>',
+ briefcase:'<rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V3h8v4M3 12c6 3 12 3 18 0m-9 1v4"/>',
+ language:'<path d="M3 5h12M9 2v3M5 5c1 6 4 8 9 10M13 5c-1 6-5 10-10 12m11 4 4-12 4 12m-7-4h6"/>',
+ palette:'<path d="M12 3a9 9 0 1 0 0 18c3 0 1-4 4-4h2c5-1 4-14-6-14Z"/><circle cx="7" cy="9" r="1"/><circle cx="12" cy="6" r="1"/><circle cx="17" cy="9" r="1"/><circle cx="6" cy="14" r="1"/>',
+ music:'<path d="M9 18V5l11-2v13M9 8l11-2"/><ellipse cx="6" cy="18" rx="3" ry="3"/><ellipse cx="17" cy="16" rx="3" ry="3"/>',
+ camera:'<path d="M3 7h4l2-3h6l2 3h4v14H3Z"/><circle cx="12" cy="13" r="4"/>',
+ film:'<rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 3v18M17 3v18M3 8h4m-4 8h4m10-8h4m-4 8h4M7 12h10"/>',
+ pen:'<path d="m3 21 5-14 10-4 3 3-4 10-14 5Zm0 0 9-9m-4-5 9 9"/><circle cx="12" cy="12" r="2"/>',
+ sparkles:'<path d="m12 3 2.5 6.5L21 12l-6.5 2.5L12 21l-2.5-6.5L3 12l6.5-2.5L12 3ZM3 2v4M1 4h4m15 14v4m-2-2h4"/>',
+ headphones:'<path d="M3 14v-3a9 9 0 0 1 18 0v3"/><rect x="3" y="12" width="4" height="9" rx="2"/><rect x="17" y="12" width="4" height="9" rx="2"/>',
+ game:'<path d="M6 7h12c3 0 6 14 2 14l-5-4H9l-5 4C0 21 3 7 6 7Z"/><path d="M5 12h6m-3-3v6m8-3h.1m3 2h.1"/>',
+ heart:'<path d="M12 21 3 12C-3 5 7-1 12 6c5-7 15-1 9 6l-9 9Z"/>',
+ leaf:'<path d="M20 3C3 1 1 12 7 18c6 6 17-1 13-15ZM4 21 16 9"/>',
+ sun:'<circle cx="12" cy="12" r="4"/><path d="M12 1v3m0 16v3M1 12h3m16 0h3M4 4l2 2m12 12 2 2M4 20l2-2M18 6l2-2"/>',
+ moon:'<path d="M21 14A9 9 0 0 1 10 3a9 9 0 1 0 11 11Z"/>',
+ activity:'<path d="M2 12h5l3-9 4 18 3-9h5"/>',
+ dumbbell:'<path d="M7 5v14M3 8v8m4-4h10m0-7v14m4-11v8M3 12H1m20 0h2"/>',
+ water:'<path d="M12 2S4 11 4 16a8 8 0 0 0 16 0c0-5-8-14-8-14Z"/>',
+ smile:'<circle cx="12" cy="12" r="9"/><path d="M8 14c2 4 6 4 8 0M8 8h.1M16 8h.1"/>',
+ home:'<path d="m2 11 10-9 10 9M5 9v12h14V9M9 21v-8h6v8"/>',
+ coffee:'<path d="M3 8h14v8a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5V8Zm14 1h2a3 3 0 0 1 0 6h-2M6 2v3m5-3v3"/>',
+ globe:'<circle cx="12" cy="12" r="9"/><ellipse cx="12" cy="12" rx="4" ry="9"/><path d="M3 12h18"/>',
+ plane:'<path d="m22 2-8 20-3-9-9-3L22 2Zm0 0L11 13"/>',
+ wallet:'<path d="M21 8V5H5a3 3 0 0 0 0 6h16v10H5a3 3 0 0 1-3-3V8m19 5h-6v5h6m-4-2.5h.1"/>',
+ people:'<circle cx="9" cy="7" r="4"/><path d="M2 21v-3a7 7 0 0 1 14 0v3M16 3a4 4 0 0 1 0 8m2 3c4 1 4 4 4 7"/>',
+ plant:'<path d="M8 21h8l2-8H6l2 8Zm4-8V6m0 4C3 10 3 3 3 3c7 0 9 4 9 7Zm0-2c0-6 8-6 8-6s0 6-8 6Z"/>',
+ check:'<circle cx="12" cy="12" r="9"/><path d="m7 12 3 3 7-7"/>'
+};
+export function icon(name) { const span=document.createElement('span'); span.innerHTML=`<svg viewBox="0 0 24 24" aria-hidden="true">${paths[name] || paths.target}</svg>`; return span.firstChild; }

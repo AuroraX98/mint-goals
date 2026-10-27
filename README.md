@@ -1,17 +1,28 @@
 # Mint Goals
 
-A mint-green goal planner: break goals into steps, choose icons and emojis,
+A quiet mint-green goal planner: break goals into steps, choose icons and emojis,
 organize categories, and see completed goals over time.
 
 ## Start using Mint Goals
 
-**[Use Mint Goals online](https://mint-goals.aurorax.chatgpt.site)** — open the shared
-online app and sign in with your own ChatGPT account. Goals are stored separately
-for each signed-in user; this does not give visitors access to someone else’s goals.
-No manual deployment is needed. Internet and ChatGPT sign-in are required.
+**[Use Mint Goals online](https://mint-goals.aurorax.chatgpt.site)** — no installation:
+this opens the shared hosted web app, not a new copy of the Site. Click **Sign in
+with ChatGPT** and use your own ChatGPT account. You can also open the
+[sign-in page](https://mint-goals.aurorax.chatgpt.site/signin-with-chatgpt?return_to=%2F)
+directly. The app stores goals separately by signed-in account; it does not show
+another visitor's goals. Internet and ChatGPT sign-in are required. Account
+isolation is covered by automated API tests; a live two-account visitor test has
+not been performed. If your session expires, export unsaved edits, sign in in the
+new tab offered by the app, then return and retry saving.
 
 Prefer no account or internet? Download the offline edition below. Developers can
 also deploy their own Sites copy.
+
+## Preview
+
+![Mint Goals offline app with a sample reading goal, Learning category, two steps and 50% progress](docs/preview.jpg)
+
+Actual app screenshot using synthetic sample data—not anyone’s personal goals.
 
 ## Choose your edition
 

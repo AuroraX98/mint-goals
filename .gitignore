@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env*
+.dev.vars*
+.wrangler/
+.vinext/
+.sites-runtime/
+outputs/
+*.log
+*backup*.json
+mint-goals-*.json

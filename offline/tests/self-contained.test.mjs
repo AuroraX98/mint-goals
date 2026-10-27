@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {readFileSync} from 'node:fs';import vm from 'node:vm';
+const html=readFileSync(new URL('../index.html',import.meta.url),'utf8');
+test('downloadable HTML is self-contained and network connections are disabled',()=>{assert.match(html,/connect-src 'none'/);assert.match(html,/default-src 'none'/);assert.doesNotMatch(html.replaceAll('http://www.w3.org/2000/svg',''),/<script[^>]+src=|<link[^>]+href=|@import|\burl\s*\(|\bfetch\s*\(|XMLHttpRequest|WebSocket|\/api\/state|https?:\/\//i);const script=html.match(/<script>([\s\S]*)<\/script>/)[1];assert.doesNotThrow(()=>new vm.Script(script));});

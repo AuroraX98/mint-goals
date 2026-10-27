@@ -1,0 +1,10 @@
+import {readFileSync,writeFileSync} from 'node:fs';
+const source=new URL('../src/',import.meta.url);
+const names=['completion','model','icons','goal-form','progress','storage','app'];
+const js=names.map(name=>readFileSync(new URL(name+'.mjs',source),'utf8').replace(/^import .*;\n/gm,'').replace(/^export /gm,'')).join('\n');
+let html=readFileSync(new URL('index.html',source),'utf8');
+html=html.replace('<link rel="stylesheet" href="styles.css">','<style>'+readFileSync(new URL('styles.css',source),'utf8')+'</style>');
+html=html.replace('<script type="module" src="app.mjs"></script>','<script>\n(()=>{\n'+js.replace(/<\/script/gi,'<\\/script')+'\n})();\n</script>');
+html=html.replace('<meta charset="utf-8">','<meta charset="utf-8"><meta http-equiv="Content-Security-Policy" content="default-src \'none\'; script-src \'unsafe-inline\'; style-src \'unsafe-inline\'; img-src data: blob:; connect-src \'none\'; font-src \'none\'; object-src \'none\'; base-uri \'none\'; form-action \'none\'">');
+writeFileSync(new URL('../index.html',import.meta.url),html);
+console.log('Built self-contained index.html (no runtime dependencies).');

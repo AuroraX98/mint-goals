@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#B5E4D0"><meta name="description" content="A little space for your goals. Write your next steps, make them yours, and see your progress.">
+<title>Mint Goals — one step at a time</title><link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to goals</a>
+<div class="app-shell">
+<aside class="sidebar">
+<a class="brand" href="./" aria-label="Mint Goals home"><span class="brand-icon" aria-hidden="true">✳</span><span>mint<span class="brand-small">GOALS</span></span></a>
+<div class="side-note"><span class="eyebrow">YOUR LITTLE SPACE</span><p>Big ideas.<br>Small steps.<br><em>Your pace.</em></p></div>
+<div class="sidebar-bottom"><span class="local-dot" aria-hidden="true"></span> <span id="save-state" role="status">Loading your goals…</span><p>Your goals, across your devices.</p><div class="backup-actions"><button id="export" class="text-button">Export backup</button><button id="import" class="text-button">Import backup</button></div><input id="import-file" type="file" accept="application/json,.json" hidden></div>
+</aside>
+<main id="main">
+<header class="page-header"><div><span class="eyebrow">A LITTLE CLARITY, A LITTLE MOMENTUM</span><h1>Make room for your goals.</h1><p>Write it down. Find your next step. Make it yours.</p></div><button id="new-goal" class="primary"><span aria-hidden="true">＋</span> New goal</button></header>
+<div id="storage-warning" class="warning" role="alert" hidden></div>
+<section class="overview" aria-label="Your goal summary"><div><span class="overview-icon" aria-hidden="true">↗</span><div><strong id="active-count">0</strong><span>goals in progress</span></div></div><div><span class="overview-icon lavender" aria-hidden="true">✓</span><div><strong id="step-count">0</strong><span>steps taken</span></div></div><div><span class="overview-icon" aria-hidden="true">✳</span><div><strong id="completed-count">0</strong><span>goals completed</span></div></div></section>
+<nav class="view-switch" aria-label="Choose view"><button id="show-goals" class="secondary" aria-pressed="true">Goals</button><button id="show-progress" class="secondary" aria-pressed="false">Progress</button></nav>
+<section id="progress-view" hidden aria-labelledby="progress-heading"><div class="section-heading"><h2 id="progress-heading">Look how far you’ve come.</h2></div><p class="progress-explainer">Currently completed goals, including archived completions. Each goal counts once at its latest completion; reopening removes it from this view.</p><div class="progress-controls"><label for="progress-period">Show by</label><select id="progress-period"><option value="week">Week · last 8 weeks</option><option value="month">Month · last 12 months</option></select><label for="progress-category">Category</label><select id="progress-category"><option value="">All categories</option></select></div><div id="progress-content"></div></section>
+<section id="goals-view" class="goals-section" aria-labelledby="goals-heading"><div class="section-heading"><h2 id="goals-heading">Your goals</h2><div class="filters" role="group" aria-label="Filter goals"><button data-filter="active" aria-pressed="true">In progress</button><button data-filter="completed" aria-pressed="false">Completed</button><button data-filter="archived" aria-pressed="false">Archived</button></div></div><div class="category-bar"><label for="category-filter">Category</label><select id="category-filter"><option value="">All goals</option></select><button id="manage-categories" class="text-button">Manage categories</button></div><div id="goals" class="goals-grid"></div></section>
+<footer>One step is still a step. <span aria-hidden="true">✳</span></footer>
+</main></div>
+<dialog id="editor"><form id="editor-form"><div class="dialog-heading"><span class="eyebrow" id="editor-kicker">A FRESH START</span><button type="button" class="icon-button" id="close-editor" aria-label="Close editor">×</button></div><h2 id="editor-title">A new goal</h2><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="cancel-editor" class="secondary">Cancel</button><button type="submit" class="primary" id="save-editor">Save goal</button></div></form></dialog>
+<div id="status" class="toast" role="status" aria-live="polite"></div>
+<script type="module" src="app.mjs"></script>
+</body></html>

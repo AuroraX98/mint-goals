@@ -1,3 +1,4 @@
+import { reflectionFields, customQuestionFields } from '../public/reflection.mjs';
 import { completionFields } from '../public/completion.mjs';
 export const MAX_BYTES = 2_000_000;
 function invalid(message) { throw new Error(message); }
@@ -14,13 +15,13 @@ function unique(items) {
 }
 export function validateState(state) {
   keys(state, ['version','goals','categories']);
-  if (![1,2].includes(state.version) || !Array.isArray(state.goals) || state.goals.length > 200 || !Array.isArray(state.categories) || state.categories.length > 50) invalid('Invalid state or limits exceeded.');
+  if (![1,2,3].includes(state.version) || !Array.isArray(state.goals) || state.goals.length > 200 || !Array.isArray(state.categories) || state.categories.length > 50) invalid('Invalid state or limits exceeded.');
   for (const c of state.categories) { keys(c, ['id','name']); text(c.name, 60, true); }
   unique(state.categories); unique(state.goals);
   const categories = new Set(state.categories.map(c => c.id));
   for (const g of state.goals) {
-    keys(g, ['id','title','description','icon','categoryId','tasks','status','previousStatus','createdAt','completedAt','completionDate']);
-    text(g.title, 140, true); text(g.description, 3000);
+    keys(g, ['id','title','description','icon','categoryId','tasks','status','previousStatus','createdAt','completedAt','completionDate','reflection','customQuestions']);
+    text(g.title, 140, true); text(g.description, 3000); reflectionFields(g.reflection); customQuestionFields(g.customQuestions);
     if (g.icon !== undefined) text(g.icon, 40, true);
     if (g.categoryId !== undefined && g.categoryId !== null && g.categoryId !== '' && !categories.has(g.categoryId)) invalid('Unknown category.');
     if (!['active','completed','archived'].includes(g.status)) invalid('Invalid goal status.');
@@ -41,9 +42,9 @@ export async function readState(db, ownerId) {
 export async function writeState(db, ownerId, state, version) {
   validateState(state);
   if (!Number.isSafeInteger(version) || version < 0 || version >= Number.MAX_SAFE_INTEGER) invalid('Invalid revision.');
-  // Block stale pre-progress clients from dropping recorded dates. CAS still guards the write.
+  // Block older clients from dropping completion dates or per-goal reflections. CAS still guards the write.
   const existing=await readState(db,ownerId);
-  if(existing.state?.version===2 && state.version===1) return {conflict:true,...existing};
+  if(existing.state && existing.state.version > state.version) return {conflict:true,...existing};
   const json = JSON.stringify(state), now = new Date().toISOString();
   // A single conditional SQL write is the concurrency boundary, not a preceding read.
   const result = version === 0
@@ -52,12 +53,19 @@ export async function writeState(db, ownerId, state, version) {
   if (result.meta.changes !== 1) return {conflict:true, ...await readState(db,ownerId)};
   return {state, version:version + 1};
 }
+// A loaded notebook is bound to its authenticated account, even if another tab changes login.
+// This opaque digest is a same-account guard, not an authentication credential.
+export async function ownerScopeFor(ownerId) {
+  const digest=await crypto.subtle.digest('SHA-256',new TextEncoder().encode('mint-goals:owner-scope:v1:'+ownerId));
+  return Array.from(new Uint8Array(digest),b=>b.toString(16).padStart(2,'0')).join('');
+}
 export async function handleStateRequest(request, db, ownerId) {
   const respond = (body, status=200) => Response.json(body, {status, headers:{'Cache-Control':'private, no-store','Vary':'Cookie','X-Content-Type-Options':'nosniff'}});
   if (!ownerId) return respond({error:'unauthorized'},401);
   if (!db) return respond({error:'storage_unavailable'},503);
   try {
-    if (request.method === 'GET') return respond(await readState(db,ownerId));
+    const ownerScope=await ownerScopeFor(ownerId);
+    if (request.method === 'GET') return respond({...await readState(db,ownerId),ownerScope});
     if (request.method !== 'PUT') return respond({error:'method_not_allowed'},405);
     const origin = request.headers.get('origin');
     if (origin && origin !== new URL(request.url).origin) return respond({error:'invalid_origin'},403);
@@ -69,7 +77,10 @@ export async function handleStateRequest(request, db, ownerId) {
     while (true) { const {value,done}=await reader.read(); if(done) break; size+=value.byteLength; if(size>MAX_BYTES) { await reader.cancel(); return respond({error:'too_large'},413); } chunks.push(value); }
     const bytes=new Uint8Array(size); let offset=0; for(const chunk of chunks) {bytes.set(chunk,offset);offset+=chunk.byteLength;}
     let payload;
-    try { payload=JSON.parse(new TextDecoder().decode(bytes)); keys(payload,['state','version']); validateState(payload.state); if(!Number.isSafeInteger(payload.version)||payload.version<0||payload.version>=Number.MAX_SAFE_INTEGER) invalid('Invalid revision.'); }
+    try { payload=JSON.parse(new TextDecoder().decode(bytes)); keys(payload,['state','version','ownerScope']);
+      if(typeof payload.ownerScope!=='string')return respond({error:'upgrade_required',message:'Reload the updated app before saving. Export any unsaved edits first.'},409);
+      if(payload.ownerScope!==ownerScope)return respond({error:'account_changed',message:'This tab was opened with a different account. Your edits were not saved. Export them, then sign back in with the original account.'},409);
+      validateState(payload.state); if(!Number.isSafeInteger(payload.version)||payload.version<0||payload.version>=Number.MAX_SAFE_INTEGER) invalid('Invalid revision.'); }
     catch(error) { return respond({error:'invalid_state',message:error.message},400); }
     const result=await writeState(db,ownerId,payload.state,payload.version);
     if(result.conflict) return respond({error:'conflict',state:result.state,version:result.version},409);

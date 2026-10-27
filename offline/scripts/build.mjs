@@ -1,6 +1,6 @@
 import {readFileSync,writeFileSync} from 'node:fs';
 const source=new URL('../src/',import.meta.url);
-const names=['completion','model','icons','goal-form','progress','storage','app'];
+const names=['completion','reflection','model','icons','goal-form','progress','storage','app'];
 const js=names.map(name=>readFileSync(new URL(name+'.mjs',source),'utf8').replace(/^import .*;\n/gm,'').replace(/^export /gm,'')).join('\n');
 let html=readFileSync(new URL('index.html',source),'utf8');
 html=html.replace('<link rel="stylesheet" href="styles.css">','<style>'+readFileSync(new URL('styles.css',source),'utf8')+'</style>');

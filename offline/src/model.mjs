@@ -1,3 +1,4 @@
+import { reflectionFields, customQuestionFields } from './reflection.mjs';
 import { completionFields } from './completion.mjs';
 export const STORAGE_KEY = 'mint-goals.v1';
 export const LIMITS = { goals: 200, tasks: 200, title: 140, description: 3000, task: 300, emoji: 24 };
@@ -10,7 +11,7 @@ export function cleanText(value, max, required = false) {
   return text;
 }
 export function createGoal(title, description = '') {
-  return { id: uid(), title: cleanText(title, LIMITS.title, true), description: cleanText(description, LIMITS.description), icon: 'target', categoryId: '', tasks: [], status: 'active', completedAt: null, completionDate: null, createdAt: new Date().toISOString() };
+  return { id: uid(), title: cleanText(title, LIMITS.title, true), description: cleanText(description, LIMITS.description), reflection: reflectionFields(), customQuestions: [], icon: 'target', categoryId: '', tasks: [], status: 'active', completedAt: null, completionDate: null, createdAt: new Date().toISOString() };
 }
 export function createTask(text, emoji = '✨') {
   return { id: uid(), text: cleanText(text, LIMITS.task, true), emoji: cleanText(emoji, LIMITS.emoji), done: false };
@@ -26,11 +27,13 @@ export function moveTask(goal, id, direction) {
   return true;
 }
 export function validateBackup(raw, newIds = false) {
-  if (!raw || ![1,2].includes(raw.version) || !Array.isArray(raw.goals) || raw.goals.length > LIMITS.goals) throw new Error('Choose a valid Mint Goals backup (up to 200 goals).');
+  if (!raw || ![1,2,3].includes(raw.version) || !Array.isArray(raw.goals) || raw.goals.length > LIMITS.goals) throw new Error('Choose a valid Mint Goals backup (up to 200 goals).');
   const ids = new Set();
   return raw.goals.map(g => {
     if (!g || !['active', 'completed', 'archived'].includes(g.status) || !Array.isArray(g.tasks) || g.tasks.length > LIMITS.tasks) throw new Error('This backup contains an invalid goal.');
     const goal = createGoal(g.title, g.description);
+    goal.reflection = reflectionFields(g.reflection);
+    goal.customQuestions = customQuestionFields(g.customQuestions);
     if (!newIds && (typeof g.id !== 'string' || !g.id || ids.has(g.id))) throw new Error('This backup contains duplicate or invalid goal IDs.');
     goal.id = newIds ? goal.id : g.id; ids.add(goal.id);
     goal.icon = typeof g.icon === 'string' ? g.icon : 'target'; goal.categoryId = typeof g.categoryId === 'string' ? g.categoryId : '';

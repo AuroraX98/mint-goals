@@ -1,7 +1,8 @@
 # Mint Goals
 
 A quiet mint-green goal planner: break goals into steps, choose icons and emojis,
-organize categories, and see completed goals over time.
+organize categories, keep optional ideas and intentions beside each goal’s steps,
+and see completed goals over time.
 
 ## Start using Mint Goals
 
@@ -22,7 +23,8 @@ also deploy their own Sites copy.
 
 ![Mint Goals offline app with a sample reading goal, Learning category, two steps and 50% progress](docs/preview.jpg)
 
-Actual app screenshot using synthetic sample data—not anyone’s personal goals.
+Actual app screenshot from the earlier version, before the optional Why this goal?
+pane was added. It uses synthetic sample data—not anyone’s personal goals.
 
 ## Choose your edition
 
@@ -75,6 +77,11 @@ and any separately deployed Sites copy are separate stores.
 
 - Goals with small steps, optional descriptions, icons and task emojis.
 - Categories, task reordering, completion/reopening and archiving.
+- An entirely optional **Why this goal?** pane next to each goal’s steps: five
+  reflection questions and your own editable question/answer pairs. Collapse it
+  without losing answers; the pane scrolls independently and stacks on mobile.
+- Answers belong to that goal, not a global scratchpad. No AI and no required
+  questionnaire: leaving every field blank never blocks creating or completing goals.
 - Weekly/monthly completion charts, category filters, accessible chart tables,
   and a completed-goal timeline.
 - Typical duration is **median elapsed days**, not hours worked.
@@ -89,8 +96,9 @@ and any separately deployed Sites copy are separate stores.
 2. In the other edition, click **Import backup** and choose that JSON file.
 3. Review the count, then confirm **Add to my goals**.
 
-Both accept Mint Goals v1/v2 backups and export v2. Categories, icons, task emojis,
-completion timestamps and known manual dates are retained. Import adds goals with
+Both accept Mint Goals v1/v2/v3 backups and export v3. Categories, icons, task emojis,
+completion timestamps, known manual dates, five reflection answers and custom
+question/answer pairs are retained. Import adds goals with
 fresh IDs; it does **not** merge or synchronize them. Importing the same backup
 twice creates duplicates. Existing goals are not replaced. Date-unknown legacy
 goals stay unknown. JSON backups contain your private text—do not commit them here.
@@ -119,3 +127,28 @@ file URLs. Mobile file-opening/storage behavior is browser-dependent.
 
 No license has been selected; this repository does not grant a specific open-source
 license. Existing third-party notices in the Sites source remain applicable.
+
+## Ideas and intentions: limits and saving
+
+The five questions are: why this goal matters, what you are curious to explore,
+what you want to learn or discover, what you want to create or accomplish, and
+how you will use what you learn. Each answer allows 2,000 characters. Add up to
+100 custom questions per goal (300 characters per question; 2,000 per answer).
+Every field is optional, including newly added blank questions.
+
+The whole notebook still has a roughly 1.99 MB UTF-8 data budget; the per-field
+limits do not promise that every goal can be filled to every maximum at once.
+Over-limit input is not truncated: it stays as an unsaved, exportable draft in
+the open tab. Shorten it before closing or export first. An over-limit backup
+needs shortening before reimport. Check the save status; failed or conflicting
+saves do not become saved merely because the text remains visible.
+
+The hosted edition binds saves to the account that loaded the notebook. If you
+switch accounts elsewhere, it refuses to copy the first account’s goals into
+the second and keeps your draft for export. Older open tabs must export pending
+edits and reload this updated version.
+
+This update passed automated model, storage, account-switch, backup interchange,
+and DOM event-handler tests. It did not receive a new rendered-browser pass:
+the managed preview route was unavailable. The screenshot above predates the
+optional right-hand pane.

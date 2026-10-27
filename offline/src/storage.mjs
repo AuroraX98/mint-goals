@@ -7,7 +7,7 @@ export function readLocal(storage){
 }
 export function writeLocal(storage,state,version){
  const current=readLocal(storage);
- if(current.version!==version)return {conflict:true,...current};
+ if(current.version!==version || (current.state && current.state.version > state.version))return {conflict:true,...current};
  if(version>=Number.MAX_SAFE_INTEGER)throw new Error('The save counter is full. Export a backup.');
  const next={state,version:version+1};storage.setItem(OFFLINE_KEY,JSON.stringify(next));return next;
 }

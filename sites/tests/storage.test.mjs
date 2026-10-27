@@ -4,7 +4,13 @@ import { DatabaseSync } from 'node:sqlite';
 import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { handleStateRequest, validateState } from '../lib/goal-store.mjs';
+import { handleStateRequest as productionRequest, validateState, ownerScopeFor } from '../lib/goal-store.mjs';
+async function handleStateRequest(request,db,owner){
+ if(request.method==='PUT'&&owner){const body=await request.json();body.ownerScope=await ownerScopeFor(owner);request=new Request(request.url,{method:'PUT',headers:request.headers,body:JSON.stringify(body)});}
+ const result=await productionRequest(request,db,owner);
+ if(request.method==='GET'&&result.status===200){const body=await result.json();delete body.ownerScope;return Response.json(body);}
+ return result;
+}
 // Run production SQL using a persistent SQLite-backed D1-compatible interface.
 function connect(path) { const sql=new DatabaseSync(path); return {sql,prepare(query){return {bind(...args){return {async first(){return sql.prepare(query).get(...args)||null;},async run(){return {meta:{changes:sql.prepare(query).run(...args).changes}};}};}};}}; }
 const sample=(title='Read a book')=>({version:1,categories:[{id:'books',name:'Learning'}],goals:[{id:'g1',title,description:'A chapter daily',icon:'book',categoryId:'books',tasks:[{id:'t1',text:'Chapter one',emoji:'📖',done:false}],status:'active',createdAt:'2026-10-25T09:00:00.000Z'}]});

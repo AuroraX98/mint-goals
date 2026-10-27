@@ -115,3 +115,20 @@ main,.page-header>div,.dialog-heading,.goal-tools{min-width:0}
  .dialog-actions{gap:14px}.view-switch{gap:12px}
 }
 .sign-in-link{display:inline-block;margin:12px 12px 0 0;text-decoration:none;line-height:1.6;min-height:44px;padding:11px 14px;white-space:normal}
+/* Each goal keeps its steps and its five optional intentions together. */
+.goals-grid{grid-template-columns:minmax(0,1fr)}
+.goal-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,.9fr);gap:32px;margin-top:26px;align-items:start}
+.goal-step-area{min-width:0}.goal-reflection{min-width:0;background:linear-gradient(140deg,#F8FCF5,#E0EFDF);border:1px solid #759683;border-radius:14px;padding:8px 18px 16px;box-shadow:inset 0 1px 0 white,0 3px 8px #244c390b}
+.goal-reflection>summary{cursor:pointer;font-family:Georgia,serif;font-size:20px;padding:14px 4px;min-height:48px;line-height:1.4}
+.reflection-intro{font-size:12px;line-height:1.7;color:var(--muted);margin:2px 0 22px}
+.reflection-answer{margin-top:20px;min-width:0}.reflection-answer label{display:block;font-size:12px;font-weight:650;line-height:1.6;margin:0 0 10px}
+.reflection-answer textarea{display:block;width:100%;max-width:100%;min-height:76px;resize:vertical;border:1px solid #759683;border-radius:9px;padding:12px;background:#FBFEF8;color:var(--ink);font-size:13px;line-height:1.6;box-shadow:inset 0 1px 3px #244c3910}
+.reflection-count{display:block;text-align:right;font-size:10px;color:var(--muted);margin-top:9px}.reflection-save-hint{font-size:10px;line-height:1.7;color:var(--muted);margin:20px 0 0}
+@media(max-width:900px){.goal-workspace{grid-template-columns:minmax(0,1fr);gap:24px}.goal-reflection{padding:6px 16px 16px}.goal-reflection:not([open]){padding-bottom:6px}.reflection-answer textarea{min-height:72px}}
+.goal-reflection{padding:8px 10px 10px}.goal-reflection>summary{margin:0 8px}
+.reflection-scroll{max-height:580px;overflow:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding:0 10px 12px;scroll-padding:14px;border-top:1px solid #a8c5af}
+.reflection-scroll:focus-visible{outline:3px solid #7557a3;outline-offset:3px}.reflection-intro{margin-top:14px}
+.custom-question{border-top:1px dashed #759683;margin-top:24px;padding-top:8px}.custom-question label{display:block;font-size:12px;line-height:1.6;font-weight:650;margin:16px 0 10px}
+.custom-question textarea{display:block;width:100%;max-width:100%;min-height:72px;border:1px solid #759683;border-radius:9px;padding:12px;background:#FBFEF8;color:var(--ink);font-size:13px;line-height:1.6;resize:vertical}
+.custom-question .text-button{min-height:44px;padding:12px 0;margin-top:8px}.reflection-scroll>.small-button{min-height:44px;max-width:100%;white-space:normal;margin-top:22px}
+@media(max-width:900px){.goal-reflection{padding:6px 10px 10px}}@media(max-width:700px){.reflection-scroll{max-height:420px}}

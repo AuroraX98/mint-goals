@@ -19,7 +19,15 @@ new tab offered by the app, then return and retry saving.
 Prefer no account or internet? Download the offline edition below. Developers can
 also deploy their own Sites copy.
 
-## Preview
+## Updated design preview
+
+![Generated illustration of a sample Python goal with steps and five optional reflection answers](docs/illustrative-preview.jpg)
+
+**Illustrative preview, generated from the current design. Not an actual screenshot.**
+It uses fictional sample answers and simplifies the layout to show the optional
+questions together. The running app may look different at your screen size.
+
+### Earlier app screenshot
 
 ![Mint Goals offline app with a sample reading goal, Learning category, two steps and 50% progress](docs/preview.jpg)
 

@@ -43,6 +43,7 @@ The tests cover the model and import validation, progress and completion, forms,
 ## Source map
 
 - `public/`: authored interface and browser model.
+- `public/mint-goals-cover.jpg`: the illustration used for link previews. If you replace it, point `og:image` in `public/index.html` at a public URL for the new picture.
 - `app/`, `worker/`: Vinext routes, Sites authentication, and Worker entrypoint.
 - `lib/goal-store.mjs`: validation and owner-scoped D1 storage.
 - `db/`, `drizzle/`: schema and schema-only migrations.

@@ -1,3 +1,5 @@
+import { mountGlassSwitch } from './filter-switch.mjs?v=2';
+import { celebrateStep, celebrateGoal } from './confetti.mjs';
 import { REFLECTION_QUESTIONS, REFLECTION_LIMIT, CUSTOM_QUESTION_LIMIT, customQuestionFields, reflectionFields, reflectionSnapshot } from './reflection.mjs';
 import { createSignInLink } from './auth-ui.mjs';
 import { completionFields, setCompleted } from './completion.mjs';
@@ -18,13 +20,27 @@ function warning(message, actions=[]){const box=$('storage-warning');box.replace
 function showSignIn(preserveEdits=false){warning(preserveEdits?'Your session expired. Export your unsaved edits first. Sign in with the same ChatGPT account in a new tab, then return here and retry saving. Keep this tab open.':'Sign in with your own ChatGPT account to load and save your goals. No installation is needed.',preserveEdits?[{text:'Export your edits',action:exportBackup},{text:'Retry save after signing in',action:()=>{blocked=false;save();}}]:[]);$('storage-warning').append(createSignInLink(document,preserveEdits));setSave(preserveEdits?'Sign in needed · edits not saved':'Not signed in');}
 function clearWarning(){if(!reflectionDrafts.size)$('storage-warning').hidden=true;}
 function validateState(data,newIds=false){const goals=validateBackup(data,newIds);if(!Array.isArray(data.categories)||data.categories.length>50)throw new Error('Invalid category list.');const seen=new Set(), mapping=new Map();const categories=data.categories.map(c=>{if(!c||typeof c.id!=='string'||!c.id||seen.has(c.id))throw new Error('Invalid category.');seen.add(c.id);const id=newIds?uid():c.id;mapping.set(c.id,id);return {id,name:cleanText(c.name,60,true)};});goals.forEach(g=>{g.categoryId=mapping.get(g.categoryId)||'';if(!paths[g.icon])g.icon='target';});const result={version:3,goals,categories};assertStateSize(result);return result;}
-async function load(){setSave('Loading your goals…');$('new-goal').disabled=true;try{const r=await fetch('/api/state',{cache:'no-store',credentials:'same-origin'});if(r.status===401){loaded=false;showSignIn();return;}if(!r.ok)throw new Error('Your goals could not be loaded. Please check your connection.');const data=await r.json();if(!Number.isInteger(data.version)||typeof data.ownerScope!=='string'||!/^[a-f0-9]{64}$/.test(data.ownerScope))throw new Error('Unexpected server response.');ownerScope=data.ownerScope;state=data.state?validateState(data.state):{version:3,goals:[],categories:[]};revision=data.version;acceptedState=JSON.stringify(state);loaded=true;reflectionDrafts.clear();dirty=false;blocked=false;conflict=false;scopeMismatch=false;clearWarning();setSave('All changes saved');render();}catch(e){warning(e.message,[{text:'Try loading again',action:load}]);setSave('Not connected');}finally{$('new-goal').disabled=!loaded;}}
-function changed(message){try{assertStateSize(state);}catch(error){state=JSON.parse(acceptedState);render();announce(error.message);return;}acceptedState=JSON.stringify(state);dirty=true;render();if(message)announce(message);save();}
+async function load(){setSave('Loading your goals…');$('new-goal').disabled=true;try{const r=await fetch('/api/state',{cache:'no-store',credentials:'same-origin'});if(r.status===401){loaded=false;showSignIn();return;}if(!r.ok)throw new Error('Your goals could not be loaded. Please check your connection.');const data=await r.json();if(!Number.isInteger(data.version)||typeof data.ownerScope!=='string'||!/^[a-f0-9]{64}$/.test(data.ownerScope))throw new Error('Unexpected server response.');ownerScope=data.ownerScope;state=data.state?validateState(data.state):{version:3,goals:[],categories:[]};revision=data.version;acceptedState=JSON.stringify(state);loaded=true;stepDrafts.clear();reflectionDrafts.clear();dirty=false;blocked=false;conflict=false;scopeMismatch=false;clearWarning();setSave('All changes saved');render();}catch(e){warning(e.message,[{text:'Try loading again',action:load}]);setSave('Not connected');}finally{$('new-goal').disabled=!loaded;}}
+function changed(message,redraw=true){
+ try{assertStateSize(state);}catch(error){state=JSON.parse(acceptedState);render();announce(error.message);return false;}
+ acceptedState=JSON.stringify(state);dirty=true;
+ if(redraw)render();
+ if(message)announce(message);
+ save();
+ return true;
+}
 async function save(){if(saving||blocked||!dirty||!loaded)return;saving=true;dirty=false;const snapshot=JSON.parse(JSON.stringify(state));setSave('Saving…');try{const r=await fetch('/api/state',{method:'PUT',credentials:'same-origin',headers:{'Content-Type':'application/json'},body:JSON.stringify({state:snapshot,version:revision,ownerScope})});if(r.status===401){dirty=true;blocked=true;showSignIn(true);return;}if(r.status===409){conflict=true;const problem=await r.json().catch(()=>({}));if(problem.error==='account_changed'){scopeMismatch=true;throw new Error('This tab belongs to a different signed-in account. Your edits have NOT been saved to the current account. Export them, then sign back in with the original account and retry, or explicitly load the current account’s saved goals.');}if(problem.error==='upgrade_required')throw new Error('This app needs to be reloaded before it can save. Export your unsaved edits first.');throw new Error('Your goals changed on another device, or this tab uses an older app version. Your edits are still here, but have not been saved. Export them first, then load the latest saved version.');}if(!r.ok)throw new Error('Your latest changes are not saved yet. They are still in this tab. Check your connection and try again, or export a backup.');const result=await r.json();if(!Number.isInteger(result.version))throw new Error('The server returned an unexpected save response. Export a backup before reloading.');revision=result.version;setSave(dirty?'Saving…':'All changes saved');clearWarning();}catch(e){dirty=true;blocked=true;setSave('Changes not saved');const actions=[{text:'Export your edits',action:exportBackup}];if(scopeMismatch)actions.push({text:'Retry after signing back in',action:()=>{blocked=false;conflict=false;scopeMismatch=false;save();}});if(conflict)actions.push({text:'Load saved version…',action:confirmReload});else actions.push({text:'Retry save',action:()=>{blocked=false;save();}});warning(e.message,actions);}finally{saving=false;if(dirty&&!blocked)save();}}
 function confirmReload(){openDialog('Load the saved version?','PROTECT YOUR EDITS',fields=>{fields.append(el('p','field-hint','This replaces the unsaved changes in this tab with the version saved on the server. Export your edits first if you want to keep them.'));},async()=>{closeDialog();loaded=false;await load();},'Replace with saved version');}
 function openDialog(title,kicker,build,onSave,saveLabel='Save'){dialogOrigin=document.activeElement;$('editor-title').textContent=title;$('editor-kicker').textContent=kicker;$('editor-error').textContent='';$('save-editor').textContent=saveLabel;$('editor-fields').replaceChildren();build($('editor-fields'));dialogAction=onSave;$('editor').showModal();const first=$('editor-fields').querySelector('input,textarea,select,button');first?.focus();}
 function closeDialog(){$('editor').close();dialogAction=null;dialogOrigin?.focus();}
-$('close-editor').onclick=closeDialog;$('cancel-editor').onclick=closeDialog;$('editor').addEventListener('close',()=>{dialogOrigin?.focus();});
+$('close-editor').onclick=closeDialog;$('cancel-editor').onclick=closeDialog;$('editor').addEventListener('close',()=>{if(dialogOrigin?.isConnected){dialogOrigin.focus();return;}
+ const oldCard=dialogOrigin?.closest('article');
+ const oldId=oldCard?.getAttribute('aria-labelledby');
+ const fresh=oldId&&document.getElementById(oldId)?.closest('article');
+ const role=dialogOrigin?.getAttribute('aria-label');
+ const candidate=fresh&&Array.from(fresh.querySelectorAll('button')).find(b=>role?b.getAttribute('aria-label')===role:b.textContent===dialogOrigin.textContent);
+ (candidate||document.querySelector('[data-filter][aria-pressed=true]'))?.focus();
+});
 $('editor-form').onsubmit=async e=>{e.preventDefault();try{await dialogAction?.();}catch(error){$('editor-error').textContent=error.message;}};
 function field(parent,label,id,value,max,multiline=false){const l=el('label','',label);l.htmlFor=id;const input=el(multiline?'textarea':'input');input.id=id;input.value=value;input.maxLength=max;if(!multiline)input.type='text';parent.append(l,input);return input;}
 function iconPicker(parent,selected,onSelect){const wrap=el('div','icon-section');wrap.setAttribute('aria-label','Choose a goal icon');let current=selected;for(const [group,names]of Object.entries(iconGroups)){wrap.append(el('h3','',group));const grid=el('div','icon-options');names.forEach(name=>{const b=button('','icon-option',()=>{current=name;wrap.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.icon===name)));onSelect(name);},name);b.dataset.icon=name;b.title=name;b.setAttribute('aria-pressed',String(name===current));b.append(icon(name));grid.append(b);});wrap.append(grid);}parent.append(wrap);}
@@ -81,7 +97,14 @@ function editTask(goal,task){let input,emoji;openDialog('Edit your step','ONE ST
 function manageCategories(){if(!loaded)return;let inputs=[],newName;openDialog('Your categories','A PLACE FOR EVERY GOAL',fields=>{fields.append(el('p','field-hint','Rename a category below, or add a new one. Your goals stay linked when you rename.'));state.categories.forEach((c,i)=>{const input=field(fields,`Category ${i+1}`,`category-${i}`,c.name,60);input.required=true;inputs.push({id:c.id,input});});newName=field(fields,'New category (optional)','new-category','',60);newName.placeholder='e.g. Learning, Wellbeing, Creative projects';},()=>{const updated=inputs.map(c=>({id:c.id,name:cleanText(c.input.value,60,true)}));const name=cleanText(newName.value,60);if(name){if(updated.length>=50)throw new Error('You can keep up to 50 categories.');updated.push({id:uid(),name});}if(new Set(updated.map(c=>c.name.toLowerCase())).size!==updated.length)throw new Error('Please give each category a different name.');state.categories=updated;closeDialog();changed('Categories saved.');},'Save categories');}
 let currentView='goals', progressPeriod='week', progressCategory='';
 const progressZone=Intl.DateTimeFormat().resolvedOptions().timeZone||'UTC';
-function switchView(view){currentView=view;document.querySelector('.overview').hidden=view==='progress';$('goals-view').hidden=view!=='goals';$('progress-view').hidden=view!=='progress';$('show-goals').setAttribute('aria-pressed',String(view==='goals'));$('show-progress').setAttribute('aria-pressed',String(view==='progress'));renderProgress();}
+function switchView(view,updateAddress=true){
+ currentView=view;
+ if(updateAddress && location.hash!=='#'+view)history.pushState(null,'','#'+view);
+ const isProgress=view==='progress';
+ document.title=(isProgress?'Progress':'Goals')+' · Mint Goals';
+ $('workspace-title').textContent=isProgress?'Progress history':'My goals';
+ $('page-title').textContent=isProgress?'Your progress.':'Your goals.';
+ $('goals-view').hidden=view!=='goals';$('progress-view').hidden=view!=='progress';syncView(view);if(isProgress)renderProgress();}
 function backfillDate(goal){let input;openDialog('Completion date','YOUR RECORD',fields=>{fields.append(el('p','field-hint','Only add a date you know. Leaving this blank keeps the date unknown. A manually entered date appears on the chart, but is excluded from typical duration because the exact time is unknown.'));input=field(fields,'Date completed (optional)','completion-date',goal.completionDate||'',10);input.type='date';const today=new Date();input.max=`${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;},()=>{const candidate={...goal,completedAt:null,completionDate:input.value||null};if(input.value&&input.value>input.max)throw new Error('Choose today or an earlier date.');Object.assign(goal,completionFields(candidate));closeDialog();changed('Completion date updated.');},'Save date');}
 function renderProgress(){
  if(!$('progress-category'))return;
@@ -100,10 +123,17 @@ function renderProgress(){
  if(!report.timeline.length)timeline.append(el('p','','No completed goals in this category yet. When you finish one, its completion date will appear here.'));
  const list=el('ol','completion-timeline');report.timeline.forEach(item=>{const g=item.goal,row=el('li');const title=el('strong','',g.title);const category=state.categories.find(c=>c.id===g.categoryId)?.name||'Uncategorized';row.append(title,el('span','timeline-meta',`${category}${g.status==='archived'?' · Archived':''}`),el('span','timeline-date',item.dateKey?`${item.dateKey}${item.dateSource==='manual'?' · Entered by you':''}`:'Completion date unknown'));if(item.durationDays!==null)row.append(el('span','timeline-meta',`${new Intl.NumberFormat(undefined,{maximumFractionDigits:1}).format(item.durationDays)} days elapsed`));if(!g.completedAt)row.append(button(g.completionDate?'Edit date':'Add known date','small-button',()=>backfillDate(g),`${g.completionDate?'Edit':'Add known'} completion date for ${g.title}`));list.append(row);});timeline.append(list);box.append(timeline);
 }
-$('show-goals').onclick=()=>switchView('goals');$('show-progress').onclick=()=>switchView('progress');$('progress-period').onchange=e=>{progressPeriod=e.target.value;renderProgress();};$('progress-category').onchange=e=>{progressCategory=e.target.value;renderProgress();};
-function render(){renderProgress();renderCategories();document.querySelectorAll('[data-filter]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.filter===filter)));const live=state.goals.filter(g=>g.status!=='archived');$('active-count').textContent=live.filter(g=>g.status==='active').length;$('completed-count').textContent=live.filter(g=>g.status==='completed').length;$('step-count').textContent=live.reduce((n,g)=>n+g.tasks.filter(t=>t.done).length,0);const shown=state.goals.filter(g=>g.status===filter&&(!categoryFilter||(categoryFilter==='uncategorized'?!g.categoryId:g.categoryId===categoryFilter)));$('goals').replaceChildren();if(!shown.length){empty();return;}shown.forEach(g=>$('goals').append(goalCard(g)));}
-function renderCategories(){const select=$('category-filter');select.replaceChildren(new Option('All goals',''),new Option('Uncategorized','uncategorized'));state.categories.forEach(c=>select.append(new Option(c.name,c.id)));select.value=categoryFilter;}
-function empty(){const box=el('div','empty-state');box.append(el('div','empty-symbol',filter==='completed'?'✓':filter==='archived'?'↶':'✳'));const title=categoryFilter?'A little space for this category.':filter==='completed'?'Your finished goals will live here.':filter==='archived'?'Nothing tucked away.':'What would you like to make happen?';box.append(el('h3','',title),el('p','',categoryFilter?'Add a goal to this category, or choose All goals to see the rest.':filter==='active'?'Start with something that matters to you. Give it a name, then break it into small, doable steps.':filter==='completed'?'When a goal feels finished, mark it complete. You can revisit or reopen it anytime.':'Archived goals stay safe here. Restore them whenever you’re ready.'));if(filter==='active'){const actions=el('div','empty-actions');actions.append(button('＋ Create a goal','primary',()=>editGoal()));if(!state.goals.length)actions.append(button('Try an example','text-button',example));box.append(actions);}$('goals').append(box);}
+const syncView=mountGlassSwitch(document.querySelector('.view-switch'),switchView,'data-view');
+$('progress-period').onchange=e=>{progressPeriod=e.target.value;renderProgress();};$('progress-category').onchange=e=>{progressCategory=e.target.value;renderProgress();};
+function updateCounts(){
+ const live=state.goals.filter(g=>g.status!=='archived');
+ $('active-count').textContent=live.filter(g=>g.status==='active').length;
+ $('completed-count').textContent=live.filter(g=>g.status==='completed').length;
+ $('step-count').textContent=live.reduce((count,goal)=>count+goal.tasks.filter(task=>task.done).length,0);
+}
+function render(){if(currentView==='progress')renderProgress();renderCategories();syncFilters(filter);if(!loaded)return;updateCounts();const shown=state.goals.filter(g=>g.status===filter&&(!categoryFilter||(categoryFilter==='uncategorized'?!g.categoryId:g.categoryId===categoryFilter)));$('goals').replaceChildren();if(!shown.length){empty();return;}shown.forEach(g=>$('goals').append(goalCard(g)));}
+function renderCategories(){const select=$('category-filter');select.replaceChildren(new Option('All categories',''),new Option('Uncategorized','uncategorized'));state.categories.forEach(c=>select.append(new Option(c.name,c.id)));select.value=categoryFilter;}
+function empty(){const box=el('div','empty-state');box.append(el('div','empty-symbol',filter==='completed'?'✓':filter==='archived'?'↶':'✳'));const title=categoryFilter?'A little space for this category.':filter==='completed'?'Your finished goals will live here.':filter==='archived'?'Nothing tucked away.':'What would you like to make happen?';box.append(el('h3','',title),el('p','',categoryFilter?'Add a goal to this category, or choose All categories to see the rest.':filter==='active'?'Start with something that matters to you. Give it a name, then break it into small, doable steps.':filter==='completed'?'When a goal feels finished, mark it complete. You can revisit or reopen it anytime.':'Archived goals stay safe here. Restore them whenever you’re ready.'));if(filter==='active'){const actions=el('div','empty-actions');actions.append(button('＋ Create a goal','primary',()=>editGoal()));if(!state.goals.length)actions.append(button('Try an example','text-button',example));box.append(actions);}$('goals').append(box);}
 function reflectionDraft(goal){return reflectionDrafts.get(goal.id)||{reflection:reflectionFields(goal.reflection),customQuestions:customQuestionFields(goal.customQuestions)};}
 function updateReflection(goal,patch){
  reflectionDrafts.set(goal.id,{...reflectionDraft(goal),...patch});
@@ -116,10 +146,11 @@ function updateReflection(goal,patch){
   clearTimeout(reflectionTimer);reflectionTimer=setTimeout(save,600);
  }catch(error){setSave('Answer draft not saved');warning(`Your answer draft is still in this tab, but has not been saved. ${error.message} Shorten it or export your edits before leaving.`,[{text:'Export your edits',action:exportBackup}]);}
 }
-function reflectionPanel(goal){
- const panel=el('details','goal-reflection');panel.open=reflectionOpen.has(goal.id)?reflectionOpen.get(goal.id):!matchMedia('(max-width:700px)').matches;
+function reflectionPanel(goal,lazy=false){
+ const panel=el('details','goal-reflection');panel.open=reflectionOpen.has(goal.id)?reflectionOpen.get(goal.id):false;
  panel.addEventListener('toggle',()=>reflectionOpen.set(goal.id,panel.open));
  const summary=el('summary','','Why this goal?');panel.append(summary);
+ function buildContents(){
  const body=el('div','reflection-scroll');body.setAttribute('role','region');body.setAttribute('aria-label',`Optional ideas and intentions for ${goal.title}`);body.tabIndex=0;
  body.append(el('p','reflection-intro','Your ideas & intentions, connected to this goal. Every question is optional.'));
  for(const [key,question] of REFLECTION_QUESTIONS){
@@ -150,17 +181,146 @@ function reflectionPanel(goal){
   }
   add.disabled=items.length>=CUSTOM_QUESTION_LIMIT;capacity.textContent=`${items.length} of 100 custom questions · optional`;
  }
- drawCustom();panel.append(body);return panel;
+ drawCustom();panel.append(body);
+ }
+ if(!lazy||panel.open)buildContents();
+ else {
+  function expand(){if(panel.open){buildContents();panel.removeEventListener('toggle',expand);}}
+  panel.addEventListener('toggle',expand);
+ }
+ return panel;
 }
-function goalCard(goal){const card=el('article','goal-card');const header=el('div','goal-top');const iconButton=button('','goal-symbol',()=>chooseGoalIcon(goal),`Choose icon for ${goal.title}`);iconButton.append(icon(goal.icon));header.append(iconButton);const tools=el('div','goal-tools');tools.append(button('Edit goal','small-button',()=>editGoal(goal)));header.append(tools);const title=el('h3','goal-title',goal.title);title.id=`goal-${goal.id}`;card.setAttribute('aria-labelledby',title.id);card.append(header,title);if(goal.categoryId){const category=state.categories.find(c=>c.id===goal.categoryId);if(category)card.append(el('span','category-badge',category.name));}if(goal.description)card.append(el('p','goal-description',goal.description));const workspace=el('div','goal-workspace'),stepArea=el('div','goal-step-area');card.append(workspace);workspace.append(stepArea,reflectionPanel(goal));const p=progress(goal),label=el('div','progress-label');label.append(el('span','',`${p.done} of ${p.total} steps complete`),el('span','',`${p.percent}%`));const track=el('div','progress-track');track.setAttribute('role','progressbar');track.setAttribute('aria-label',`${goal.title}: steps completed`);track.setAttribute('aria-valuenow',p.percent);track.setAttribute('aria-valuemin','0');track.setAttribute('aria-valuemax','100');const fill=el('div','progress-fill');fill.style.width=`${p.percent}%`;track.append(fill);stepArea.append(label,track);const list=el('ul','steps');goal.tasks.forEach((task,index)=>{const li=el('li',`step${task.done?' done':''}`),checkLabel=el('label','step-check'),check=el('input');check.type='checkbox';check.checked=task.done;check.disabled=goal.status!=='active';check.addEventListener('change',()=>{task.done=check.checked;changed();const target=document.getElementById(`task-${task.id}`);target?.focus();});check.id=`task-${task.id}`;checkLabel.append(check,el('span','step-emoji',task.emoji),el('span','step-text',task.text));li.append(checkLabel);if(goal.status==='active'){const controls=el('div','step-controls');const up=button('↑','',()=>{moveTask(goal,task.id,-1);changed();document.querySelector(`[data-move="${CSS.escape(task.id)}-up"]`)?.focus();},`Move ${task.text} up`);up.disabled=index===0;up.dataset.move=`${task.id}-up`;const down=button('↓','',()=>{moveTask(goal,task.id,1);changed();document.querySelector(`[data-move="${CSS.escape(task.id)}-down"]`)?.focus();},`Move ${task.text} down`);down.disabled=index===goal.tasks.length-1;down.dataset.move=`${task.id}-down`;controls.append(up,down,button('✎','',()=>editTask(goal,task),`Edit ${task.text}`));li.append(controls);}list.append(li);});stepArea.append(list);if(goal.status==='active'){if(!goal.tasks.length)stepArea.append(el('p','no-steps','Every goal starts somewhere. What’s your first step?'));stepArea.append(addTaskForm(goal));}else if(goal.status==='completed')stepArea.append(el('p','complete-note','Completed. A little moment to appreciate how far you came.'));const footer=el('div','card-footer');if(goal.status==='archived'){footer.append(button('↶ Restore goal','complete-button',()=>{goal.status=goal.previousStatus||'active';filter=goal.status;changed('Goal restored.');}));}else{footer.append(button(goal.status==='completed'?'↶ Reopen goal':'✓ Mark complete','complete-button',()=>{if(goal.status==='active'&&goal.tasks.some(t=>!t.done)){openDialog('Complete this goal?','YOUR GOAL, YOUR CALL',fields=>fields.append(el('p','field-hint','Some steps are still unchecked. You can finish the goal as it is, or cancel and keep going. Your step history will stay unchanged.')),()=>{setCompleted(goal,true);filter='completed';closeDialog();changed('Goal completed. Nicely done.');},'Complete goal');}else{setCompleted(goal,goal.status!=='completed');filter=goal.status;changed(goal.status==='completed'?'Goal completed. Nicely done.':'Goal reopened.');}}));footer.append(button('Archive','text-button',()=>{goal.previousStatus=goal.status;goal.status='archived';changed('Goal archived. Restore it anytime from Archived.');}));}card.append(footer);return card;}
-function addTaskForm(goal){const form=el('form','add-step');let selected='✨';const emoji=button(selected,'emoji-trigger',()=>chooseEmoji(selected,value=>{selected=value;emoji.textContent=value||'＋';}),`Choose emoji for a new step in ${goal.title}`);const input=el('input');input.type='text';input.placeholder='Add a small next step…';input.maxLength=300;input.required=true;input.setAttribute('aria-label',`New step for ${goal.title}`);const submit=el('button','','＋');submit.type='submit';submit.setAttribute('aria-label','Add step');form.append(emoji,input,submit);form.onsubmit=e=>{e.preventDefault();try{if(goal.tasks.length>=200)throw new Error('This goal already has 200 steps.');goal.tasks.push(createTask(input.value,selected));changed('Step added.');document.querySelector(`[data-add-goal="${CSS.escape(goal.id)}"] input`)?.focus();}catch(error){announce(error.message);}};form.dataset.addGoal=goal.id;return form;}
+function paintProgress(goal,ring,percentage,label){
+ const value=progress(goal);
+ ring.style.setProperty('--fill',value.percent+'%');
+ ring.setAttribute('aria-valuenow',value.percent);
+ percentage.textContent=value.percent+'%';
+ label.textContent=value.done+' of '+value.total+' steps complete';
+}
+function goalCard(goal){
+ const card=el('article','goal-card');
+ const header=el('div','goal-top');
+ const iconButton=button('','goal-symbol',()=>chooseGoalIcon(goal),'Choose icon for '+goal.title);
+ iconButton.append(icon(goal.icon));header.append(iconButton);
+ if(goal.categoryId){
+  const category=state.categories.find(c=>c.id===goal.categoryId);
+  if(category)header.append(el('span','category-badge',category.name));
+ }
+ const tools=el('div','goal-tools');
+ tools.append(button('Edit goal','small-button',()=>editGoal(goal)));header.append(tools);
+ const title=el('h3','goal-title',goal.title);title.id='goal-'+goal.id;
+ card.setAttribute('aria-labelledby',title.id);card.append(header,title);
+ if(goal.description)card.append(el('p','goal-description',goal.description));
+ const workspace=el('div','goal-workspace'),stepArea=el('div','goal-step-area');
+ card.append(workspace);workspace.append(stepArea,reflectionPanel(goal,true));
+ const summary=el('div','progress-label'),ring=el('div','liquid-ring'),percentage=el('span'),label=el('span');
+ ring.setAttribute('role','progressbar');ring.setAttribute('aria-label','Steps completed for '+goal.title);
+ ring.setAttribute('aria-valuemin','0');ring.setAttribute('aria-valuemax','100');
+ ring.append(percentage);summary.append(ring,label);stepArea.append(summary);paintProgress(goal,ring,percentage,label);
+ const list=el('ul','steps');goal.tasks.forEach((task,index)=>{const li=el('li',`step${task.done?' done':''}`),checkLabel=el('label','step-check'),check=el('input');check.type='checkbox';check.checked=task.done;check.disabled=goal.status!=='active';check.addEventListener('change',()=>{
+  task.done=check.checked;li.classList.toggle('done',task.done);
+  paintProgress(goal,ring,percentage,label);
+  const count=$('step-count');count.textContent=Number(count.textContent)+(task.done?1:-1);
+  if(changed(undefined,false) && task.done){
+   card.classList.remove('step-pulse');
+   requestAnimationFrame(()=>card.classList.add('step-pulse'));
+   celebrateStep(check);
+  }
+ });
+ check.id='task-'+goal.id+'-'+task.id;checkLabel.append(check,el('span','step-emoji',task.emoji),el('span','step-text',task.text));li.append(checkLabel);if(goal.status==='active'){const controls=el('div','step-controls');const focusMove=direction=>{
+   const controls=document.getElementById('goal-'+goal.id)?.closest('article')?.querySelectorAll('[data-move]');
+   const buttons=Array.from(controls||[]).filter(b=>b.dataset.move===task.id+'-up'||b.dataset.move===task.id+'-down');
+   (buttons.find(b=>b.dataset.move===task.id+'-'+direction&&!b.disabled)||buttons.find(b=>!b.disabled))?.focus();
+  };
+  const up=button('↑','',()=>{moveTask(goal,task.id,-1);changed();focusMove('up');},`Move ${task.text} up`);up.disabled=index===0;up.dataset.move=`${task.id}-up`;const down=button('↓','',()=>{moveTask(goal,task.id,1);changed();focusMove('down');},`Move ${task.text} down`);down.disabled=index===goal.tasks.length-1;down.dataset.move=`${task.id}-down`;controls.append(up,down,button('✎','',()=>editTask(goal,task),`Edit ${task.text}`));li.append(controls);}list.append(li);});stepArea.append(list);if(goal.status==='active'){if(!goal.tasks.length)stepArea.append(el('p','no-steps','Every goal starts somewhere. What’s your first step?'));stepArea.append(addTaskForm(goal));}else if(goal.status==='completed')stepArea.append(el('p','complete-note','Completed. A little moment to appreciate how far you came.'));
+ const footer=el('div','card-footer');
+ if(goal.status==='archived'){
+  footer.append(button('↶ Restore goal','complete-button',()=>{
+   goal.status=goal.previousStatus||'active';filter=goal.status;changed('Goal restored.');
+  }));
+ }else{
+  function finish(){
+   setCompleted(goal,true);filter='completed';
+   if(changed('Goal completed. Nicely done.')) celebrateGoal();
+  }
+  footer.append(button(goal.status==='completed'?'↶ Reopen goal':'✓ Mark complete','complete-button',()=>{
+   if(goal.status==='completed'){
+    setCompleted(goal,false);filter=goal.status;changed('Goal reopened.');return;
+   }
+   if(goal.tasks.every(task=>task.done)){finish();return;}
+   openDialog('Complete this goal?','YOUR GOAL, YOUR CALL',fields=>{
+    fields.append(el('p','field-hint','Some steps are still unchecked. You can finish the goal as it is, or cancel and keep going. Your step history will stay unchanged.'));
+   },()=>{closeDialog();finish();},'Complete goal');
+  }));
+  footer.append(button('Archive','text-button',()=>{
+   goal.previousStatus=goal.status;goal.status='archived';changed('Goal archived. Restore it anytime from Archived.');
+  }));
+ }
+ card.append(footer);return card;}
+const stepDrafts=new Map();
+function addTaskForm(goal){const form=el('form','add-step');const draft=stepDrafts.get(goal.id);let selected=draft?.emoji??'✨';const emoji=button(selected,'emoji-trigger',()=>chooseEmoji(selected,value=>{selected=value;emoji.textContent=value||'＋';stepDrafts.set(goal.id,{text:input.value,emoji:selected});}),`Choose emoji for a new step in ${goal.title}`);const input=el('input');input.type='text';input.value=draft?.text||'';input.addEventListener('input',()=>stepDrafts.set(goal.id,{text:input.value,emoji:selected}));input.placeholder='Add a small next step…';input.maxLength=300;input.required=true;input.setAttribute('aria-label',`New step for ${goal.title}`);const submit=el('button','','＋');submit.type='submit';submit.setAttribute('aria-label','Add step');form.append(emoji,input,submit);form.onsubmit=e=>{e.preventDefault();try{if(goal.tasks.length>=200)throw new Error('This goal already has 200 steps.');goal.tasks.push(createTask(input.value,selected));stepDrafts.delete(goal.id);changed('Step added.');document.querySelector(`[data-add-goal="${CSS.escape(goal.id)}"] input`)?.focus();}catch(error){announce(error.message);}};form.dataset.addGoal=goal.id;return form;}
 function example(){if(!loaded)return;const g=createGoal('Make more room for reading','A little time away from the screen, with a book I’m excited to pick up.');g.icon='book';g.tasks=[createTask('Choose a book that sparks my curiosity','📚'),createTask('Find a cozy spot to read','☕'),createTask('Read the first chapter','✨')];state.goals.unshift(g);changed('Example added. Make it yours, or archive it anytime.');}
 function exportBackup(){if(!loaded){announce('Load your goals before exporting a backup.');return;}const blob=new Blob([JSON.stringify(reflectionSnapshot(state,reflectionDrafts),null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),a=el('a');a.href=url;a.download=`mint-goals-${new Date().toISOString().slice(0,10)}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);announce('Backup downloaded. Keep it somewhere safe.');}
 $('export').onclick=exportBackup;$('import').onclick=()=>{if(!loaded){announce('Load your goals before importing a backup.');return;}$('import-file').click();};
-$('import-file').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;try{if(file.size>5000000)throw new Error('Please choose a backup smaller than 5 MB.');const data=validateState(JSON.parse(await file.text()),true);assertStateSize({version:3,goals:[...state.goals,...data.goals],categories:[...state.categories,...data.categories]});if(state.goals.length+data.goals.length>200||state.categories.length+data.categories.length>50)throw new Error('This import would exceed 200 goals or 50 categories.');openDialog('Import this backup?','KEEP EVERYTHING',fields=>fields.append(el('p','field-hint',`Add ${data.goals.length} goals and ${data.categories.length} categories. Existing goals will not be replaced. Importing the same backup twice creates duplicates.`)),()=>{state.goals.push(...data.goals);state.categories.push(...data.categories);closeDialog();changed('Backup imported. Your existing goals are unchanged.');},'Add to my goals');}catch(error){announce(error instanceof SyntaxError?'That file isn’t valid JSON. Please choose a Mint Goals backup.':error.message);}};
-$('new-goal').onclick=()=>editGoal();$('manage-categories').onclick=manageCategories;$('category-filter').onchange=e=>{categoryFilter=e.target.value;render();};document.querySelectorAll('[data-filter]').forEach(b=>b.onclick=()=>{filter=b.dataset.filter;render();});window.addEventListener('beforeunload',e=>{if(dirty||saving||reflectionDrafts.size){e.preventDefault();e.returnValue='';}});window.addEventListener('online',()=>{if(blocked&&!conflict){blocked=false;save();}});
+$('import-file').onchange=async event=>{
+ const file=event.target.files[0];event.target.value='';
+ if(!file||!loaded)return;
+ try {
+  if(file.size>5000000)throw new Error('Please choose a backup smaller than 5 MB.');
+  const raw=JSON.parse(await file.text());
+  const emptyNotebook=!state.goals.length&&!state.categories.length;
+  const data=validateState(raw,!emptyNotebook);
+  const count=data.goals.length+' goals, '+data.goals.reduce((n,g)=>n+g.tasks.length,0)+' steps and '+data.categories.length+' categories.';
+  const append=()=>{
+   if(!loaded||blocked||scopeMismatch)throw new Error('Resolve the save warning before importing.');
+   if(emptyNotebook&&(state.goals.length||state.categories.length))throw new Error('The notebook changed. Cancel and choose the file again.');
+   const next={...state,goals:[...state.goals,...data.goals],categories:[...state.categories,...data.categories]};
+   if(next.goals.length>200||next.categories.length>50)throw new Error('This import would exceed 200 goals or 50 categories.');
+   assertStateSize(next);state=next;closeDialog();changed(emptyNotebook?'Notebook restored.':'Copies added.');
+  };
+  openDialog('Review backup','BACKUP',fields=>{
+   fields.append(el('p','',count),el('p','field-hint',emptyNotebook
+    ?'Your notebook is empty. Restore once to keep the original goal and step IDs.'
+    :'This notebook already contains data. Continuing adds copies, including goals or categories already here. Cancel to leave it as it is.'));
+  },append,emptyNotebook?'Restore to empty notebook':'Add copies');
+ }catch(error){announce(error instanceof SyntaxError?'That file is not valid JSON. Choose a Mint Goals backup.':error.message);}
+};
+$('new-goal').onclick=()=>editGoal();$('manage-categories').onclick=manageCategories;$('category-filter').onchange=e=>{categoryFilter=e.target.value;render();};const syncFilters=mountGlassSwitch(document.querySelector('.filters'),value=>{filter=value;render();});syncFilters(filter);window.addEventListener('beforeunload',e=>{if(dirty||saving||reflectionDrafts.size){e.preventDefault();e.returnValue='';}});window.addEventListener('online',()=>{if(blocked&&!conflict){blocked=false;save();}});
 let refreshing=false;
 function safeToRefresh(){return loaded&&!dirty&&!saving&&!blocked&&!refreshing&&!$('editor').open&&!reflectionDrafts.size&&!document.querySelector('.goal-reflection textarea:focus')&&!document.querySelector('.add-step input:focus')&&![...document.querySelectorAll('.add-step input')].some(i=>i.value.trim());}
 async function refreshFromServer(){if(!safeToRefresh())return;refreshing=true;try{const r=await fetch('/api/state',{cache:'no-store',credentials:'same-origin'});if(!r.ok)return;const data=await r.json();if(data.ownerScope!==ownerScope){blocked=true;conflict=true;scopeMismatch=true;setSave('Account changed · edits kept');warning('The signed-in account changed. This tab still holds the previous account’s goals. Export any edits, then sign back in with the original account, or load the current account’s saved goals.',[{text:'Export your edits',action:exportBackup},{text:'Load current account…',action:confirmReload}]);return;}if(!dirty&&!saving&&!blocked&&!$('editor').open&&!reflectionDrafts.size&&!document.querySelector('.goal-reflection textarea:focus')&&!document.querySelector('.add-step input:focus')&&![...document.querySelectorAll('.add-step input')].some(i=>i.value.trim())&&Number.isSafeInteger(data.version)&&data.version>revision){state=validateState(data.state);revision=data.version;acceptedState=JSON.stringify(state);render();setSave('All changes saved');announce('Updated from your other device.');}}catch{}finally{refreshing=false;}}
 window.addEventListener('focus',refreshFromServer);document.addEventListener('visibilitychange',()=>{if(!document.hidden)refreshFromServer();});setInterval(()=>{if(!document.hidden)refreshFromServer();},30000);
+document.querySelectorAll('[data-icon]').forEach(node=>node.append(icon(node.dataset.icon)));
+const today=new Date();
+$('today').textContent=new Intl.DateTimeFormat(undefined,{weekday:'long',month:'long',day:'numeric'}).format(today);
+$('today').dateTime=[today.getFullYear(),String(today.getMonth()+1).padStart(2,'0'),String(today.getDate()).padStart(2,'0')].join('-');
+function routeFromAddress(){switchView(location.hash==='#progress'?'progress':'goals',false);}
+addEventListener('hashchange',routeFromAddress);
+routeFromAddress();
+const backups=document.querySelector('.backup-menu');
+const movingLight=matchMedia('(hover:hover) and (pointer:fine) and (prefers-reduced-motion:no-preference)');
+let lightFrame=0,litCard=null;
+function clearLight(){
+ cancelAnimationFrame(lightFrame);
+ litCard?.style.removeProperty('--light-x');
+ litCard?.style.removeProperty('--light-y');
+ litCard=null;
+}
+$('goals').addEventListener('pointermove',event=>{
+ if(!movingLight.matches)return;
+ const card=event.target.closest('.goal-card');
+ if(card!==litCard){clearLight();litCard=card;}
+ if(!card)return;
+ cancelAnimationFrame(lightFrame);
+ const {clientX,clientY}=event;
+ lightFrame=requestAnimationFrame(()=>{
+  const box=card.getBoundingClientRect();
+  card.style.setProperty('--light-x',(clientX-box.left)+'px');
+  card.style.setProperty('--light-y',(clientY-box.top)+'px');
+ });
+});
+$('goals').addEventListener('pointerleave',clearLight);
+movingLight.addEventListener('change',clearLight);
+document.addEventListener('click',event=>{if(!backups.contains(event.target))backups.open=false;});
+backups.addEventListener('keydown',event=>{if(event.key==='Escape'){backups.open=false;backups.querySelector('summary').focus();}});
 load();

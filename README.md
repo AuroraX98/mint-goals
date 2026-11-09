@@ -1,8 +1,9 @@
 # Mint Goals
 
-A quiet mint-green goal planner: break goals into steps, choose icons and emojis,
-organize categories, keep optional ideas and intentions beside each goal’s steps,
-and see completed goals over time.
+Break a goal into small steps, check them off, and see how far you’ve come.
+Open **Why this goal?** when you want to remember what matters or jot down an idea.
+
+![Mint Goals cover illustration with a frosted glass checklist, a progress ring, and a fresh mint sprig](sites/public/mint-goals-cover.jpg)
 
 ## Start using Mint Goals
 
@@ -19,13 +20,12 @@ new tab offered by the app, then return and retry saving.
 Prefer no account or internet? Download the offline edition below. Developers can
 also deploy their own Sites copy.
 
-## Updated design preview
+## Inside the online planner
 
-![Generated illustration of a sample Python goal with steps and five optional reflection answers](docs/illustrative-preview.jpg)
-
-**Illustrative preview, generated from the current design. Not an actual screenshot.**
-It uses fictional sample answers and simplifies the layout to show the optional
-questions together. The running app may look different at your screen size.
+The progress ring fills as you finish steps. Glass tabs shift as you switch
+views, and confetti celebrates each checked step and completed goal.
+Opening **Why this goal?** slowly lights the reflection panel. Choose a light
+or dark theme, or follow your device. The app also follows your reduced-motion setting.
 
 ## Choose your edition
 
@@ -78,9 +78,8 @@ and any separately deployed Sites copy are separate stores.
 
 - Goals with small steps, optional descriptions, icons and task emojis.
 - Categories, task reordering, completion/reopening and archiving.
-- An entirely optional **Why this goal?** pane next to each goal’s steps: five
-  reflection questions and your own editable question/answer pairs. Collapse it
-  without losing answers; the pane scrolls independently and stacks on mobile.
+- Each goal has an optional **Why this goal?** panel with five reflection
+  questions and room for your own. You can close it and return to your answers later.
 - Answers belong to that goal, not a global scratchpad. No AI and no required
   questionnaire: leaving every field blank never blocks creating or completing goals.
 - Weekly/monthly completion charts, category filters, accessible chart tables,
@@ -95,14 +94,14 @@ and any separately deployed Sites copy are separate stores.
 
 1. In the source edition, click **Export backup**.
 2. In the other edition, click **Import backup** and choose that JSON file.
-3. Review the count, then confirm **Add to my goals**.
+3. Check the counts. In an empty Sites notebook, **Restore to empty notebook**
+   keeps the original IDs. In a populated Sites notebook, **Add copies** makes
+   new copies. The offline edition uses **Add to my goals** to add copies.
 
 Both accept Mint Goals v1/v2/v3 backups and export v3. Categories, icons, task emojis,
 completion timestamps, known manual dates, five reflection answers and custom
-question/answer pairs are retained. Import adds goals with
-fresh IDs; it does **not** merge or synchronize them. Importing the same backup
-twice creates duplicates. Existing goals are not replaced. Date-unknown legacy
-goals stay unknown. JSON backups contain your private text—do not commit them here.
+question/answer pairs are retained. Adding the same file twice creates duplicates.
+Choose **Cancel** if you already have those goals. Keep JSON backups in a private folder.
 
 ## Development / checks
 
@@ -148,8 +147,3 @@ The hosted edition binds saves to the account that loaded the notebook. If you
 switch accounts elsewhere, it refuses to copy the first account’s goals into
 the second and keeps your draft for export. Older open tabs must export pending
 edits and reload this updated version.
-
-This update passed automated model, storage, account-switch, backup interchange,
-and DOM event-handler tests. It did not receive a new rendered-browser pass:
-the managed preview route was unavailable. The screenshot above predates the
-optional right-hand pane.

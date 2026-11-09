@@ -1,6 +1,6 @@
 # Mint Goals — ChatGPT Sites edition
 
-This is the reusable, full-stack edition of Mint Goals: the mint interface, authenticated per-user storage, revision-conflict protection, and JSON backup import/export. It starts with no personal goals. It contains no existing Site identity, deployment history, database contents, secrets, or account information.
+Break goals into steps, write down why they matter, and watch the glass progress ring fill as you go. This edition includes light and dark themes, keyboard controls, and reduced-motion support. Each signed-in person gets a separate notebook. A new deployment starts empty.
 
 **This folder is a ChatGPT Sites template, not a standalone static website.** Copying `public/` to a generic host does not provide its authenticated `/api/state` backend. For device-local use without Sites, use the offline edition in the repository root instead.
 
@@ -21,7 +21,7 @@ Availability of Sites and its hosting features depends on your ChatGPT account. 
 
 - `/api/state` requires the Sites-authenticated identity. Records are keyed by the stable, Site-scoped user ID, not email.
 - Server saves use atomic revision checks. A concurrent change preserves tab edits and asks for explicit resolution; it is not silently overwritten.
-- Import accepts Mint Goals JSON schema versions **1 and 2**. Export/import behavior is unchanged from the hosted app. Import merges with fresh IDs and explicit confirmation; it does not restore a server revision or overwrite another account.
+- Import accepts Mint Goals JSON versions **1, 2, and 3**. **Restore to empty notebook** preserves the file’s goal and category IDs. If there are already goals or categories, **Add copies** creates new IDs and can duplicate existing goals. The review screen lets you cancel before saving.
 - To move from a different Site or the offline edition, export a backup there, then import it into your own new Site. New Sites have separate identity scopes and databases; data is not automatically transferred.
 - Unsaved edits are in memory. If a network save fails, export a backup before closing the tab. This edition is not an offline-first client.
 

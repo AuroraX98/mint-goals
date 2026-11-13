@@ -23,7 +23,9 @@ test('durable sessions, user isolation, concurrent revision conflicts, authoriza
  assert.equal((await handleStateRequest(get(),db,null)).status,401);
  const initial=await Promise.all([handleStateRequest(req(sample('First')),db,'new-user'),handleStateRequest(req(sample('Second')),db,'new-user')]);
  assert.deepEqual(initial.map(r=>r.status).sort(),[200,409]);
- assert.equal((await initial.find(r=>r.status===409).json()).state.goals[0].title,'First');
+ const initialWinner=['First','Second'][initial.findIndex(r=>r.status===200)];
+ const initialConflict=await initial.find(r=>r.status===409).json();assert.equal(initialConflict.version,1);assert.deepEqual(initialConflict.state,sample(initialWinner));
+ assert.deepEqual(await (await handleStateRequest(get(),db,'new-user')).json(),{state:sample(initialWinner),version:1});
  for(const bad of [null,1,'bad']) {
    assert.equal((await handleStateRequest(req({...sample(),goals:[bad]}),db,'alice')).status,400);
    assert.equal((await handleStateRequest(req({...sample(),categories:[bad]}),db,'alice')).status,400);
@@ -39,7 +41,9 @@ test('durable sessions, user isolation, concurrent revision conflicts, authoriza
  assert.equal((await handleStateRequest(req(sample('Late initial write')),db,'alice')).status,409);
  const results=await Promise.all([handleStateRequest(req(sample('Computer'),1),db,'alice'),handleStateRequest(req(sample('Phone'),1),db,'alice')]);
  assert.deepEqual(results.map(r=>r.status).sort(),[200,409]);
- const conflict=await results.find(r=>r.status===409).json();assert.equal(conflict.version,2);assert.equal(conflict.state.goals[0].title,'Computer');
+ const winner=['Computer','Phone'][results.findIndex(r=>r.status===200)];
+ const conflict=await results.find(r=>r.status===409).json();assert.equal(conflict.version,2);assert.deepEqual(conflict.state,sample(winner));
+ assert.deepEqual(await (await handleStateRequest(get(),db,'alice')).json(),{state:sample(winner),version:2});
  assert.equal((await (await handleStateRequest(get(),db,'bob')).json()).state.goals[0].title,'Bob private');
  assert.equal((await handleStateRequest(req(sample(),2,{Origin:'https://evil.example'}),db,'alice')).status,403);
  assert.equal((await handleStateRequest(req({...sample(),ownerId:'bob'},2),db,'alice')).status,400);

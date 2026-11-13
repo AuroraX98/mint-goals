@@ -12,7 +12,7 @@
 <meta property="og:image:height" content="640">
 <meta property="og:image:alt" content="Mint Goals beside a frosted glass checklist, a progress ring, and a fresh mint sprig.">
 <meta name="twitter:card" content="summary_large_image">
-<title>Goals · Mint Goals</title><link rel="icon" href="favicon.svg"><script src="appearance.js"></script><link rel="stylesheet" href="styles.css">
+    <title>Goals · Mint Goals</title><link rel="icon" href="favicon.svg"><script src="appearance.js"></script><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="ui-improvements.css?v=ui-refresh-2"><link rel="stylesheet" href="reflection-feedback.css"><link rel="stylesheet" href="surface-motion.css?v=ui-refresh-2">
 </head>
 <body>
 <a class="skip" href="#main">Skip to planner</a>
@@ -52,10 +52,10 @@
     <button id="new-goal" class="primary" type="button" disabled><span aria-hidden="true">＋</span> New goal</button>
   </div></div>
 <section id="progress-view" hidden aria-labelledby="progress-heading"><h2 class="sr-only" id="progress-heading">Completion history</h2><p class="progress-explainer">Currently completed goals, including archived completions. Each goal counts once at its latest completion; reopening removes it from this view.</p><div class="progress-controls"><label for="progress-period">Show by</label><select id="progress-period"><option value="week">Week · last 8 weeks</option><option value="month">Month · last 12 months</option></select><label for="progress-category">Category</label><select id="progress-category"><option value="">All categories</option></select></div><div id="progress-content"></div></section>
-<section id="goals-view" class="goals-section" aria-labelledby="goals-heading"><div class="section-heading"><h2 id="goals-heading" class="sr-only">Filter your goals</h2><div class="filters" role="group" aria-label="Filter goals"><button data-filter="active" aria-pressed="true">In progress</button><button data-filter="completed" aria-pressed="false">Completed</button><button data-filter="archived" aria-pressed="false">Archived</button></div></div><div class="category-bar"><label for="category-filter">Category</label><select id="category-filter"><option value="">All categories</option></select><button id="manage-categories" class="text-button">Manage categories</button></div><div id="goals" class="goals-grid"></div></section>
+<section id="goals-view" class="goals-section" aria-labelledby="goals-heading"><div class="section-heading"><h2 id="goals-heading" class="sr-only">Filter your goals</h2><div class="filters" role="group" aria-label="Filter goals"><button data-filter="active" aria-pressed="true">In progress</button><button data-filter="completed" aria-pressed="false">Completed</button><button data-filter="archived" aria-pressed="false">Archived</button></div></div><div class="category-bar"><label for="category-filter">Category</label><select id="category-filter"><option value="">All categories</option></select><button id="manage-categories" class="text-button">Manage categories</button></div><div id="focus-controls" class="focus-controls" hidden></div><div id="goals" class="goals-grid"></div></section>
 
 </main>
-<dialog id="editor" aria-labelledby="editor-title"><form id="editor-form"><div class="dialog-heading"><span class="sr-only" id="editor-kicker"></span><button type="button" class="icon-button" id="close-editor" aria-label="Close editor">×</button></div><h2 id="editor-title">A new goal</h2><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="cancel-editor" class="secondary">Cancel</button><button type="submit" class="primary" id="save-editor">Save goal</button></div></form></dialog>
+<dialog id="editor" aria-labelledby="editor-title"><form id="editor-form"><div class="dialog-body"><div class="dialog-heading"><span class="sr-only" id="editor-kicker"></span><button type="button" class="icon-button" id="close-editor" aria-label="Close editor">×</button></div><h2 id="editor-title">A new goal</h2><div id="editor-fields"></div><p id="editor-error" class="error" role="alert"></p></div><div class="dialog-actions"><button type="button" id="cancel-editor" class="secondary">Cancel</button><button type="submit" class="primary" id="save-editor">Save goal</button></div></form></dialog>
 <div id="status" class="toast" role="status" aria-live="polite"></div>
-<script type="module" src="app.mjs"></script>
+<script type="module" src="app.mjs?v=ui-refresh-2"></script>
 </body></html>

@@ -1,0 +1,23 @@
+:root {--ease-out:cubic-bezier(.23,1,.32,1)}
+
+/* The dialog itself uses WAAPI; the native backdrop stays in the top layer. */
+dialog[data-surface-dialog]::backdrop {opacity:1;transition:opacity 200ms var(--ease-out)}
+@starting-style {
+  dialog[data-surface-dialog][open]:not([data-surface-instant])::backdrop {opacity:0}
+}
+dialog[data-surface-instant]::backdrop {transition:none}
+.backup-actions {transform-origin:top right}
+
+/* Closing copies never receive focus, pointer input, or live announcements. */
+.surface-motion-ghost {pointer-events:none!important;user-select:none;animation:none!important;transition:none!important}
+.surface-dialog-ghost {z-index:1001;transform-origin:center}
+.surface-dialog-ghost>form {display:flex;flex-direction:column;height:100%;max-height:100%;min-height:0}
+.surface-dialog-backdrop-ghost {position:fixed;inset:0;z-index:1000;pointer-events:none;background:#081e18a8;backdrop-filter:blur(3px)}
+.surface-backups-ghost {z-index:7;transform-origin:top right}
+.surface-toast-ghost {z-index:6}
+
+/* Transform-free, short fades are the only reduced-motion exception. WAAPI
+   durations are chosen in the module; unrelated CSS motion remains disabled. */
+@media(prefers-reduced-motion:reduce) {
+  dialog[data-surface-dialog]:not([data-surface-instant])::backdrop {transition:opacity 80ms var(--ease-out)!important}
+}

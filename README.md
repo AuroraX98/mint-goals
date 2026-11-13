@@ -1,149 +1,83 @@
 # Mint Goals
 
-Break a goal into small steps, check them off, and see how far you’ve come.
-Open **Why this goal?** when you want to remember what matters or jot down an idea.
+Mint Goals helps you turn a goal into small steps, work on one thing at a time, and see your progress.
+
+**[Open Mint Goals online](https://mint-goals.aurorax.chatgpt.site)** and choose **Sign in with ChatGPT**. No download or setup is needed. Use your own account; each person has a separate notebook. The online app needs an internet connection.
 
 ![Mint Goals cover illustration with a frosted glass checklist, a progress ring, and a fresh mint sprig](sites/public/mint-goals-cover.jpg)
 
-## Start using Mint Goals
+## Create your first goal
 
-**[Use Mint Goals online](https://mint-goals.aurorax.chatgpt.site)** — no installation:
-this opens the shared hosted web app, not a new copy of the Site. Click **Sign in
-with ChatGPT** and use your own ChatGPT account. You can also open the
-[sign-in page](https://mint-goals.aurorax.chatgpt.site/signin-with-chatgpt?return_to=%2F)
-directly. The app stores goals separately by signed-in account; it does not show
-another visitor's goals. Internet and ChatGPT sign-in are required. Account
-isolation is covered by automated API tests; a live two-account visitor test has
-not been performed. If your session expires, export unsaved edits, sign in in the
-new tab offered by the app, then return and retry saving.
+1. Choose **New goal**, give it a name, and add any first steps you already know.
+2. Choose **Create goal**. You can add a description, category, or icon whenever you want.
+3. Add more steps in **Add a small next step…**. Check a step when you finish it.
 
-Prefer no account or internet? Download the offline edition below. Developers can
-also deploy their own Sites copy.
+For example, your goal could be “Read a book,” with a step called “Read chapter one.” If a step still feels too big, open **Substeps**, choose **Add substeps**, and write one smaller action per line.
 
-## Inside the online planner
+A step with substeps becomes complete when all its substeps are checked. Checking or clearing that whole step changes all its substeps too. The progress ring counts finished steps. Choose **Mark complete** when the goal itself is finished; checking every step does not finish the goal automatically.
 
-The progress ring fills as you finish steps. Glass tabs shift as you switch
-views, and confetti celebrates each checked step and completed goal.
-Opening **Why this goal?** slowly lights the reflection panel. Choose a light
-or dark theme, or follow your device. The app also follows your reduced-motion setting.
+Use the three-dot options button beside a step for **Edit step**, **Move up**, or **Move down**. Use **Edit goal** to change the goal's name, description, category, or icon.
 
-## Choose your edition
+## Work on one goal at a time
 
-| Edition | Start here | Storage | Internet / account |
-| --- | --- | --- | --- |
-| **Offline** | [`offline/index.html`](offline/index.html) | This browser on this device | No ChatGPT account, backend, or internet required after download |
-| **ChatGPT Sites** | [`sites/README.md`](sites/README.md) | Your own private Sites deployment with per-user D1 storage | Requires ChatGPT Sites and sign-in; online access |
+1. In **In progress**, choose a category if you want to narrow the list.
+2. Choose **Focus on this** on a goal, or turn on **One goal at a time**.
+3. Open **Other goals** to choose a different goal or move goals up and down to set what comes next.
 
-### 1. Offline: download and open
+When you complete the current goal, the app pauses. Choose **Open next goal** when you are ready. Completed goals stay available below, and turning off **One goal at a time** shows the usual list again.
 
-1. On GitHub, choose **Code → Download ZIP**, then extract it.
-2. Open `offline/index.html` in a current desktop browser (Chrome, Edge, Firefox, or Safari).
-3. Create a goal, add steps/categories, and use **Export backup** regularly.
+Your chosen category, focused goal, goal order, and whether **Other goals** and **Completed goals** are open are remembered in this browser, separately for each account and category. These view choices do not sync to another device and are not included in backups.
 
-The HTML contains all its JavaScript, CSS and icons. There are no CDN assets,
-remote fonts, analytics, API calls or ChatGPT connections. Its Content Security
-Policy blocks network connections. You do not need Node or Python to open it.
+## Remember why it matters
 
-**Important browser-storage limits:** data belongs to this browser/profile and
-location, not the downloaded HTML file. Private browsing, clearing browser data,
-moving/renaming the HTML, switching browsers or devices, and browser storage
-restrictions can lose access to saved goals. `file://` storage behavior varies
-between browsers. Keep exported JSON backups somewhere safe; never rely on the
-HTML file itself as a backup. Use one editing tab at a time. A revision check warns
-about stale tabs but browser storage is not a transactional multi-user database.
-Goals are not encrypted against people who can access your browser profile.
+Open **Why this goal?** to write about why the goal matters, what you are curious about, or what you hope to learn or create. There are five optional questions, and **Add a custom question** lets you add your own.
 
-If direct-file storage is unavailable, use a local server (Python 3 required):
+Type directly into an answer to edit it. Answers save automatically; check the save message beside them before closing the page. You can leave every answer blank and still create, work on, or complete the goal. The app does not generate or assess your answers.
 
-```sh
-cd mint-goals-main/offline
-python3 -m http.server 8080 --bind 127.0.0.1
-```
+## See what you have done
 
-On Windows, use `py -m http.server 8080 --bind 127.0.0.1` instead. Open
-`http://127.0.0.1:8080/`. Keep that terminal running while opening/reloading the
-app; press Ctrl+C to stop it. This serves only local files and needs no internet.
-Always use the same browser and address/port to return to the same saved data.
-The extracted folder's name may differ; `cd` into its `offline` folder.
+Open **Progress** for weekly or monthly completion charts and your completed-goal timeline. You can filter by category or view the chart as a table. **Completed** and **Archived** keep finished or set-aside goals accessible, with options to reopen or restore them.
 
-### 2. ChatGPT Sites: create your own private app
+Each goal counts once, at its latest completion. Reopening it removes that completion from the chart. Older goals with no recorded completion date stay marked as unknown; you can add a date you know. “Typical elapsed time” measures calendar days from creation to completion, not hours worked, and excludes manually entered dates.
 
-Follow [`sites/README.md`](sites/README.md). This is reusable source, not access to
-someone else's account. Create a **new** Site with its own project identity,
-ChatGPT authentication and D1 database. The repository does not contain deployed project IDs, credentials, user goals,
-or deployment history. The offline edition, the shared online app,
-and any separately deployed Sites copy are separate stores.
+## Online or offline?
 
-## Features in both editions
+| | Online app | Offline edition |
+| --- | --- | --- |
+| Start | [Open and sign in](https://mint-goals.aurorax.chatgpt.site) | Download and open `offline/index.html` |
+| Saved goals | Your account on this Site; available on your other signed-in devices | This browser and device only |
+| Internet | Required | Not needed after download |
+| Features | Current interface, substeps, and **One goal at a time** | Simpler interface with goals, steps, categories, reflections, and progress charts |
+| Backups | Imports versions 1–4; exports version 4 | Imports versions 1–3; exports version 3 |
 
-- Goals with small steps, optional descriptions, icons and task emojis.
-- Categories, task reordering, completion/reopening and archiving.
-- Each goal has an optional **Why this goal?** panel with five reflection
-  questions and room for your own. You can close it and return to your answers later.
-- Answers belong to that goal, not a global scratchpad. No AI and no required
-  questionnaire: leaving every field blank never blocks creating or completing goals.
-- Weekly/monthly completion charts, category filters, accessible chart tables,
-  and a completed-goal timeline.
-- Typical duration is **median elapsed days**, not hours worked.
-- Older completion dates stay **unknown**. Optional manually entered dates are
-  marked and excluded from duration calculations; no history is invented.
-- One current completion per goal, including archived completed goals. Reopening
-  removes that completion; completing again records the latest date.
+**Offline backups can be imported into the online app. Current online backups cannot be imported into the offline edition**, even if you have not added substeps. The two editions keep separate notebooks.
 
-## Move your own goals between editions
+### Download the offline edition
 
-1. In the source edition, click **Export backup**.
-2. In the other edition, click **Import backup** and choose that JSON file.
-3. Check the counts. In an empty Sites notebook, **Restore to empty notebook**
-   keeps the original IDs. In a populated Sites notebook, **Add copies** makes
-   new copies. The offline edition uses **Add to my goals** to add copies.
+1. On GitHub, choose **Code → Download ZIP**, then extract the download.
+2. Open `offline/index.html` in a desktop browser.
+3. Use **Export backup** regularly and keep the downloaded backup somewhere safe.
 
-Both accept Mint Goals v1/v2/v3 backups and export v3. Categories, icons, task emojis,
-completion timestamps, known manual dates, five reflection answers and custom
-question/answer pairs are retained. Adding the same file twice creates duplicates.
-Choose **Cancel** if you already have those goals. Keep JSON backups in a private folder.
+The offline app needs no account, installation, or internet connection after download. It makes no network requests. Your goals are saved in browser storage, not inside the HTML file. Clearing browser data, private browsing, changing browser profiles, or moving the HTML file can lose access to those goals. Use one editing tab at a time. Anyone with access to that browser profile may be able to read them.
 
-## Development / checks
+If opening the file directly cannot save, the [local server instructions](docs/DEVELOPMENT.md#open-the-offline-edition-with-a-local-server) provide another way to run it on your computer.
 
-Offline source is in `offline/src`. With Node 22+:
+## Save and back up your goals
 
-```sh
-cd offline
-npm test
-npm run build
-```
+The online app saves changes automatically. Wait for **All changes saved** before closing it. If saving fails or another device has changed the notebook, keep the tab open and use **Export your edits** before reloading or loading the saved version. Unsaved edits remain only in that tab. If sign-in expires, export first, use the offered sign-in link, then return to the original tab and retry saving with the same account.
 
-No npm packages are required for the offline edition. The build regenerates its
-self-contained `index.html`. Sites has its own dependencies and test/build steps.
+For a normal backup, open **Backups → Export backup**. The downloaded JSON file contains your goal text, steps, substeps where supported, categories, reflection answers, and completion records. Keep it in a private folder.
 
-## Verification limits
+To bring a supported backup into the online app:
 
-The offline app was exercised in an isolated Chromium local origin with the
-serving process stopped after initial load and network connections denied by CSP.
-Creation, step completion and goal completion worked without a backend. Automated
-tests cover persistence failures, stale saves, backup dates and calendar buckets.
-Direct `file://` launch was not testable in the cloud browser; that browser blocks
-file URLs. Mobile file-opening/storage behavior is browser-dependent.
+1. Choose **Backups → Import backup** and select the file.
+2. Review the counts shown before continuing.
+3. Choose **Restore to empty notebook** if the notebook is empty, or **Add copies** if it already contains goals or categories.
 
-No license has been selected; this repository does not grant a specific open-source
-license. Existing third-party notices in the Sites source remain applicable.
+Restoring to an empty notebook keeps the original records' IDs. Adding copies keeps your existing goals and creates new copies, so importing the same file twice creates duplicates. The offline edition calls this **Add to my goals**.
 
-## Ideas and intentions: limits and saving
+## For developers
 
-The five questions are: why this goal matters, what you are curious to explore,
-what you want to learn or discover, what you want to create or accomplish, and
-how you will use what you learn. Each answer allows 2,000 characters. Add up to
-100 custom questions per goal (300 characters per question; 2,000 per answer).
-Every field is optional, including newly added blank questions.
+The [`sites/` guide](sites/README.md) explains how to deploy a separate private Site from this source. [Development and checks](docs/DEVELOPMENT.md) covers local work, and [Data and sync](sites/DATA-AND-SYNC.md) explains the saved format and account protections.
 
-The whole notebook still has a roughly 1.99 MB UTF-8 data budget; the per-field
-limits do not promise that every goal can be filled to every maximum at once.
-Over-limit input is not truncated: it stays as an unsaved, exportable draft in
-the open tab. Shorten it before closing or export first. An over-limit backup
-needs shortening before reimport. Check the save status; failed or conflicting
-saves do not become saved merely because the text remains visible.
-
-The hosted edition binds saves to the account that loaded the notebook. If you
-switch accounts elsewhere, it refuses to copy the first account’s goals into
-the second and keeps your draft for export. Older open tabs must export pending
-edits and reload this updated version.
+No license has been selected. Existing third-party notices in the Sites source still apply.

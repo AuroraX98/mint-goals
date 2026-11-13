@@ -1,7 +1,8 @@
 import { reflectionFields, customQuestionFields } from './reflection.mjs';
 import { completionFields } from './completion.mjs';
 export const STORAGE_KEY = 'mint-goals.v1';
-export const LIMITS = { goals: 200, tasks: 200, title: 140, description: 3000, task: 300, emoji: 24 };
+export const LIMITS = { goals: 200, tasks: 200, substeps: 200, title: 140, description: 3000, task: 300, emoji: 24 };
+export const NOTEBOOK_VERSION = 4;
 export const uid = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Math.random().toString(36).slice(2)}`;
 export function cleanText(value, max, required = false) {
   if (typeof value !== 'string') throw new Error('Please enter text.');
@@ -16,6 +17,35 @@ export function createGoal(title, description = '') {
 export function createTask(text, emoji = '✨') {
   return { id: uid(), text: cleanText(text, LIMITS.task, true), emoji: cleanText(emoji, LIMITS.emoji), done: false };
 }
+export function readSubsteps(items, parentDone, newIds = false) {
+  if (!Array.isArray(items) || items.length > LIMITS.substeps) throw new Error('A step can have up to 200 substeps.');
+  const ids = new Set();
+  const substeps = items.map(item => {
+    if (!item || Object.keys(item).some(key => !['id', 'text', 'done'].includes(key)) ||
+        typeof item.id !== 'string' || !item.id.trim() || item.id.length > 128 || ids.has(item.id) ||
+        typeof item.done !== 'boolean') throw new Error('Invalid or duplicate substep.');
+    ids.add(item.id);
+    return { id: newIds ? uid() : item.id, text: cleanText(item.text, LIMITS.task, true), done: item.done };
+  });
+  if (substeps.length && substeps.every(item => item.done) !== parentDone) throw new Error('Step and substep completion do not match.');
+  return substeps;
+}
+export function addSubsteps(task, lines) {
+  const existing = task.substeps || [];
+  const texts = lines.map(line => cleanText(line, LIMITS.task)).filter(Boolean);
+  if (!texts.length) throw new Error('Enter at least one substep.');
+  if (existing.length + texts.length > LIMITS.substeps) throw new Error('A step can have up to 200 substeps.');
+  task.substeps = [...existing, ...texts.map(text => ({ id: uid(), text, done: false }))];
+  task.done = false;
+}
+export function setTaskDone(task, done) {
+  task.done = done;
+  for (const child of task.substeps || []) child.done = done;
+}
+export function syncTaskDone(task) {
+  if (task.substeps?.length) task.done = task.substeps.every(item => item.done);
+  else delete task.substeps;
+}
 export function progress(goal) {
   const done = goal.tasks.filter(t => t.done).length;
   return { done, total: goal.tasks.length, percent: goal.tasks.length ? Math.round(done / goal.tasks.length * 100) : goal.status === 'completed' ? 100 : 0 };
@@ -27,7 +57,7 @@ export function moveTask(goal, id, direction) {
   return true;
 }
 export function validateBackup(raw, newIds = false) {
-  if (!raw || ![1,2,3].includes(raw.version) || !Array.isArray(raw.goals) || raw.goals.length > LIMITS.goals) throw new Error('Choose a valid Mint Goals backup (up to 200 goals).');
+  if (!raw || ![1,2,3,NOTEBOOK_VERSION].includes(raw.version) || !Array.isArray(raw.goals) || raw.goals.length > LIMITS.goals) throw new Error('Choose a valid Mint Goals backup (up to 200 goals).');
   const ids = new Set();
   return raw.goals.map(g => {
     if (!g || !['active', 'completed', 'archived'].includes(g.status) || !Array.isArray(g.tasks) || g.tasks.length > LIMITS.tasks) throw new Error('This backup contains an invalid goal.');
@@ -46,6 +76,10 @@ export function validateBackup(raw, newIds = false) {
       if (!t || typeof t.done !== 'boolean' || (!newIds && (typeof t.id !== 'string' || !t.id || taskIds.has(t.id)))) throw new Error('This backup contains an invalid step.');
       const task = createTask(t.text, t.emoji);
       task.id = newIds ? task.id : t.id; taskIds.add(task.id); task.done = t.done;
+      if (t.substeps !== undefined) {
+        const substeps = readSubsteps(t.substeps, t.done, newIds);
+        if (substeps.length) task.substeps = substeps;
+      }
       return task;
     });
     return goal;

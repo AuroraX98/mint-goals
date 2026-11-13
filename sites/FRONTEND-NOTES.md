@@ -1,15 +1,54 @@
 # Mint Goals frontend
 
-Source: `public/index.html`, `public/styles.css`, `public/app.mjs`, `public/model.mjs`, `public/icons.mjs`.
+For everyday use, start with the [main guide](../README.md). This document maps
+the online app’s source and behavior for people changing the code.
 
-Approved light mint palette: background `#B5E4D0`, cards `#EAF7F0`, evergreen `#163B31`, lavender accent. No external font or asset requests.
+## Interface files
 
-Features: empty-by-default goals with optional example; title/description editing; goal icons (32 categorized SVG choices); custom category creation/renaming/filtering; steps with emoji picker/custom device emoji entry, editing, reordering and completion; counts/progress; completed/reopen; recoverable archive/restore; JSON export/import (merge, fresh IDs, explicit confirmation).
+- `public/index.html`, `styles.css`, `ui-improvements.css`, and
+  `reflection-feedback.css` provide the page, responsive layout, and form feedback.
+- `public/app.mjs` connects goals, steps, substeps, reflections, dialogs, and saving.
+- `public/model.mjs` validates goals and backups. The current notebook version is 4.
+- `public/focus-view.mjs` stores and reads per-category focus preferences.
+- `public/step-options.mjs`, `filter-switch.mjs`, `surface-motion.mjs`, and
+  `confetti.mjs` provide compact step controls and optional motion.
 
-Persistence: uses authenticated server API, never claims localStorage/cloud sync without server load. GET `/api/state` reads `{state,version}`; PUT posts serialized `{state,version}` snapshots. A conflict preserves tab edits, offers export and explicit destructive-to-tab reload (no blind overwrite). Offline failures retain edits and warn before unload. Clean-state focus/visibility refresh and 30-second refresh avoid open dialogs and typed new-step inputs. These are browser refresh intervals, not background jobs.
+The online app supports goals, categories, steps and substeps, goal reflections,
+completion and reopening, archiving and restoring, progress charts, and backups.
+One goal at a time keeps a selected goal visible while the rest sit in Other
+goals. Completing it waits for an explicit Open next goal action. Focus choices
+and order are browser preferences; they do not change goal status.
 
-Validation: 200 goals, 200 tasks per goal, 50 categories; bounded strings and imported dates; state payload cap below API max, invalid/oversized import rejected before mutation. Text is rendered via `textContent`; SVG markup comes only from a fixed internal icon dictionary. No user HTML.
+User text is inserted as text, not HTML. Icons come from the bundled SVG dictionary.
+Light and dark appearances use shared CSS variables. Motion respects the device’s
+reduced-motion setting.
 
-Checks: `node --test tests/model.test.mjs` (10 tests); `node --check public/app.mjs`; backend team owns TypeScript/build/API/D1 checks. No browser-driven visual/accessibility test was performed by frontend author; browser tooling unavailable. Native dialogs, semantic labels, focus styles, keyboard buttons, mobile CSS and reduced motion are implemented but not yet verified in a real browser.
+## Saving and refresh
 
-Known behavior: marking a goal complete does not silently check unfinished steps; confirms this first. Categories can be created/renamed, not deleted. Archives retain storage capacity. Unsaved edits are in memory (not durable offline); export backup before closing if save fails. Concurrent changes are safely detected rather than automatically merged. Use the same authenticated identity on both devices.
+`GET /api/state` returns `{state, version, ownerScope}`. `PUT /api/state` sends the
+same fields; `version` is the server revision, separate from the notebook schema.
+The account scope prevents a tab from saving one account’s goals into another.
+Revision conflicts preserve unsaved edits and require an explicit reload or retry.
+See [Data and sync](DATA-AND-SYNC.md) for the complete storage contract.
+
+Reflection answers save automatically after typing pauses. Oversized answer drafts
+stay available for editing and export; hiding a panel does not discard them.
+Step drafts also survive rendering and focus switches within the current tab.
+These drafts are not durable offline storage.
+
+Focus, selected category, queue order, collapsed goal sections, and appearance
+stay in this browser. They are separate from the account’s notebook and backups.
+Automatic server refresh runs on focus/visibility and at 30-second intervals while
+the page is visible, with guards for pending edits, open dialogs, and active inputs.
+
+## Behavior and checks
+
+Marking a goal complete with unchecked steps requires confirmation and preserves
+the step history. Reopening clears its current completion date. Archiving retains
+the goal and its storage use. Categories can be created and renamed.
+
+Run the checks in the [Sites setup guide](README.md#development). Tests cover
+the model, form handlers, focus persistence, substeps, backup validation, progress,
+reflection drafts, account isolation, and database revision conflicts. Local
+browser checks have exercised focus, order, category selection, completion, and
+reload persistence. This does not establish behavior on every browser or device.

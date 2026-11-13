@@ -1,0 +1,53 @@
+/* Keep actions reachable while the form body scrolls, including above a phone keyboard. */
+dialog {
+  position:fixed;top:calc(var(--dialog-viewport-offset,0px) + var(--dialog-viewport-height,100dvh)/2);
+  bottom:auto;margin:0 auto;translate:0 -50%;padding:0;overflow:hidden;
+  max-height:calc(var(--dialog-viewport-height,100dvh) - 24px);
+}
+#editor-form {display:flex;flex-direction:column;max-height:inherit;min-height:0}
+.dialog-body {min-height:0;overflow-y:auto;overscroll-behavior:contain;padding:24px;scroll-padding:16px}
+.dialog-actions {flex-shrink:0;margin:0;padding:16px 24px max(16px,env(safe-area-inset-bottom));background:var(--paper)}
+.dialog-heading .icon-button {min-width:44px;min-height:44px}
+.goal-title:focus {outline:3px solid var(--focus);outline-offset:4px;border-radius:4px}
+
+/* One spacious control on phones; direct move/edit controls on larger screens. */
+.step-options {display:none;position:relative;flex-shrink:0}
+.step-options>summary {display:grid;place-items:center;list-style:none;width:44px;height:44px;border-radius:10px;color:var(--muted);border:1px solid transparent}
+.step-options>summary::-webkit-details-marker {display:none}
+.step-options>summary::after {content:'•••';font-size:16px;letter-spacing:2px}
+.step-options[open] {z-index:3}
+.step-options[open]>summary {background:var(--soft);border-color:var(--line)}
+.step-options-panel {position:absolute;right:0;top:calc(100% + 4px);z-index:3;min-width:176px;display:grid;gap:4px;padding:8px;background:var(--paper);border:1px solid var(--edge);border-radius:12px;box-shadow:0 6px 20px var(--shadow)}
+.step-options-panel button {min-height:44px;padding:10px 12px;text-align:left;border-radius:8px;font-size:14px;white-space:nowrap}
+.step-options-panel button:disabled {opacity:.48}
+.step-options.opens-up .step-options-panel {top:auto;bottom:calc(100% + 4px)}
+@media(max-width:570px) {
+  .step-controls {display:none}
+  .step-options {display:block}
+  .step-check {gap:8px}
+  .page-header {min-height:128px;padding:14px 18px;row-gap:3px;column-gap:12px;grid-template-columns:minmax(0,1fr) 78px;grid-template-areas:"date mint" "title mint" "stats stats"}
+  .hero-mint {margin:0;min-height:62px}
+  .hero-date {font-size:9px;letter-spacing:.1em}
+  h1 {font-size:clamp(28px,7.6vw,34px);line-height:1.1;margin:2px 0 6px;letter-spacing:-.04em}
+  .overview {margin-top:2px}
+  .overview>div {padding:0 12px}
+  .overview>div:first-child {padding-left:0}
+  .overview strong {font-size:18px}
+  .overview span {font-size:11px}
+  .workspace-heading {margin:14px 0 10px;position:relative}
+  .workspace-heading h2 {position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+  .workspace-actions {width:100%;flex-direction:row;align-items:center;justify-content:space-between;gap:8px}
+  #save-state {font-size:12px;max-width:calc(100% - 130px)}
+  .dialog-body {padding:20px;scroll-padding:12px}
+  .dialog-actions {padding:12px 20px max(12px,env(safe-area-inset-bottom))}
+}
+@media(hover:hover) and (pointer:fine) {.step-options>summary:hover {background:var(--soft)}}
+@media(max-width:380px) {
+  .brand {font-size:19px;gap:4px}
+  .brand-mark {width:28px;height:28px}
+  .utilities summary {white-space:nowrap;overflow-wrap:normal;gap:4px;padding:6px 4px}
+  .theme-choice {width:76px;padding:0 4px}
+  .theme-choice>svg {display:none}
+  .theme-choice select {width:100%;min-width:0}
+}
+@media(forced-colors:active) {.step-options>summary,.step-options-panel {border-color:ButtonText}}

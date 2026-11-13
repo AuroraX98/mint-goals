@@ -1,5 +1,6 @@
 import { reflectionFields, customQuestionFields } from '../public/reflection.mjs';
 import { completionFields } from '../public/completion.mjs';
+import { NOTEBOOK_VERSION, readSubsteps } from '../public/model.mjs';
 export const MAX_BYTES = 2_000_000;
 function invalid(message) { throw new Error(message); }
 function record(v) { return v && typeof v === 'object' && !Array.isArray(v); }
@@ -15,7 +16,7 @@ function unique(items) {
 }
 export function validateState(state) {
   keys(state, ['version','goals','categories']);
-  if (![1,2,3].includes(state.version) || !Array.isArray(state.goals) || state.goals.length > 200 || !Array.isArray(state.categories) || state.categories.length > 50) invalid('Invalid state or limits exceeded.');
+  if (![1,2,3,NOTEBOOK_VERSION].includes(state.version) || !Array.isArray(state.goals) || state.goals.length > 200 || !Array.isArray(state.categories) || state.categories.length > 50) invalid('Invalid state or limits exceeded.');
   for (const c of state.categories) { keys(c, ['id','name']); text(c.name, 60, true); }
   unique(state.categories); unique(state.goals);
   const categories = new Set(state.categories.map(c => c.id));
@@ -30,7 +31,15 @@ export function validateState(state) {
     completionFields(g);
     if (!Array.isArray(g.tasks) || g.tasks.length > 200) invalid('Too many steps.');
     unique(g.tasks);
-    for (const t of g.tasks) { keys(t, ['id','text','emoji','done']); text(t.text, 300, true); text(t.emoji, 24); if (typeof t.done !== 'boolean') invalid('Invalid step status.'); }
+    for (const t of g.tasks) {
+      keys(t, ['id','text','emoji','done','substeps']);
+      text(t.text, 300, true); text(t.emoji, 24);
+      if (typeof t.done !== 'boolean') invalid('Invalid step status.');
+      if (t.substeps !== undefined) {
+        if (state.version < NOTEBOOK_VERSION) invalid('Substeps require the updated notebook format.');
+        readSubsteps(t.substeps, t.done);
+      }
+    }
   }
   if (new TextEncoder().encode(JSON.stringify(state)).byteLength > MAX_BYTES) invalid('State is too large.');
   return state;
@@ -42,7 +51,7 @@ export async function readState(db, ownerId) {
 export async function writeState(db, ownerId, state, version) {
   validateState(state);
   if (!Number.isSafeInteger(version) || version < 0 || version >= Number.MAX_SAFE_INTEGER) invalid('Invalid revision.');
-  // Block older clients from dropping completion dates or per-goal reflections. CAS still guards the write.
+  // Older clients must not overwrite fields that they cannot preserve.
   const existing=await readState(db,ownerId);
   if(existing.state && existing.state.version > state.version) return {conflict:true,...existing};
   const json = JSON.stringify(state), now = new Date().toISOString();

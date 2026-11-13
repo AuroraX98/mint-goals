@@ -1,0 +1,18 @@
+/* Feedback stays beside reflection answers without moving or replacing the fields. */
+.reflection-save-status {
+  margin:12px 16px 0;padding:8px 10px;
+  border:1px solid var(--line);border-radius:8px;background:var(--paper);
+  color:var(--muted);font-size:12px;line-height:1.5;
+}
+.reflection-save-status[data-state=attention] {
+  color:var(--warning-ink);background:var(--warning);border-color:var(--edge);
+}
+.reflection-field-error {margin:4px 0 0;color:#963b2b;font-size:13px;line-height:1.5;}
+.reflection-scroll textarea[aria-invalid=true] {border:2px solid #963b2b;}
+:root[data-theme=dark] .reflection-field-error {color:#ffc0b3;}
+:root[data-theme=dark] .reflection-scroll textarea[aria-invalid=true] {border-color:#ffc0b3;}
+@media(forced-colors:active) {
+  .reflection-save-status {background:Canvas;color:CanvasText;border-color:CanvasText;}
+  .reflection-field-error {color:CanvasText;}
+  .reflection-scroll textarea[aria-invalid=true] {border:2px dashed CanvasText;}
+}
